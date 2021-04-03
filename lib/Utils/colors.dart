@@ -1,0 +1,22 @@
+import 'package:flutter/material.dart';
+
+Color primaryColor = Colors.green;
+Color black = Colors.black;
+Color primaryGreyColor = Color(0xFFF1F9FD);
+Color grey = Colors.grey;
+Color greyDark = Colors.grey[700];
+Color greyLight = Colors.grey[300];
+Color grey200 = Colors.grey[200];
+Color grey100 = Colors.grey[100];
+Color textTitleColor = Color(0xff281856);
+Color lightTextColor = const Color(0x66281856);
+Color subTitleColor = const Color(0xff7a8aa5);
+Color borderColor = const Color(0xffCCDBE9);
+Color appBarTextColor = const Color(0xff222f4b);
+Color white = Colors.white;
+Color selectedColor = Color(0xff20DB85);
+Color profileFontColor = Color(0xff364e6a);
+Color headerTextColor = Color(0xff7787a3);
+Color textFieldColor = Color(0xfff3f3f4);
+Color cardColor = Color(0xffE1EAF5);
+Color buttonClick = Color(0xff05404b);
