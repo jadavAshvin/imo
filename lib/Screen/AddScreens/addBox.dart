@@ -154,7 +154,7 @@ class AddBox extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtTitle,
+                labelText: txtTitle,
               ),
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
               textInputAction: TextInputAction.next,
@@ -171,7 +171,7 @@ class AddBox extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtDescription,
+                labelText: txtDescription,
               ),
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
               textInputAction: TextInputAction.newline,
@@ -197,7 +197,7 @@ class AddBox extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtWeight,
+                labelText: txtWeight,
               ),
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.next,
@@ -214,7 +214,7 @@ class AddBox extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtHeight,
+                labelText: txtHeight,
               ),
               keyboardType: TextInputType.number,
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
@@ -231,7 +231,7 @@ class AddBox extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtWidth,
+                labelText: txtWidth,
               ),
               keyboardType: TextInputType.number,
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
@@ -250,7 +250,7 @@ class AddBox extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtLength,
+                labelText: txtLength,
               ),
               textInputAction: TextInputAction.newline,
             ),
@@ -266,7 +266,7 @@ class AddBox extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 //  border: InputBorder.none,
-                hintText: txtPrice,
+                labelText: txtPrice,
               ),
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.next,
@@ -380,7 +380,7 @@ class AddBox extends StatelessWidget {
   //             //  onEditingComplete: () => loginController.focus.unfocus(),
   //             decoration: InputDecoration(
   //               //  border: InputBorder.none,
-  //               hintText: txtPrice,
+  //               labelText: txtPrice,
   //             ),
   //             keyboardType: TextInputType.number,
   //             textInputAction: TextInputAction.next,

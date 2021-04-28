@@ -58,7 +58,7 @@ class AddLocation extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 //  border: InputBorder.none,
-                hintText: txtEnterLocationName,
+                labelText: txtEnterLocationName,
               ),
               textInputAction: TextInputAction.next,
             ),
@@ -79,7 +79,7 @@ class AddLocation extends StatelessWidget {
                     //  onEditingComplete: () => loginController.focus.unfocus(),
                     decoration: InputDecoration(
                       //   border: InputBorder.none,
-                      hintText: txtLocationAddress,
+                      labelText: txtLocationAddress,
                     ),
                     textInputAction: TextInputAction.newline,
                   ),
@@ -89,8 +89,6 @@ class AddLocation extends StatelessWidget {
                 onTap: () async {
                   await Get.to(SearchAddress());
                   addLocationController.enterAddressController.text = AppConstants.ADDRESS;
-                  addLocationController.latitudeController.text = AppConstants.LAT;
-                  addLocationController.longitudeController.text = AppConstants.LONG;
                 },
                 child: Container(
                     width: 50,
@@ -104,37 +102,6 @@ class AddLocation extends StatelessWidget {
           ),
           SizedBox(
             height: 10,
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 3.0, bottom: 3.0),
-            //  decoration: boxDecoration(),
-            child: TextFormField(
-              controller: addLocationController.latitudeController,
-              style: textFieldStyle20(),
-              //  onEditingComplete: () => loginController.focus.unfocus(),
-              decoration: InputDecoration(
-                //  border: InputBorder.none,
-                hintText: txtLatitude,
-              ),
-              textInputAction: TextInputAction.next,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Container(
-            padding: EdgeInsets.only(top: 3.0, bottom: 3.0),
-            //  decoration: boxDecoration(),
-            child: TextFormField(
-              controller: addLocationController.longitudeController,
-              style: textFieldStyle20(),
-              //  onEditingComplete: () => loginController.focus.unfocus(),
-              decoration: InputDecoration(
-                //  border: InputBorder.none,
-                hintText: txtLongitude,
-              ),
-              textInputAction: TextInputAction.next,
-            ),
           ),
         ],
       ),

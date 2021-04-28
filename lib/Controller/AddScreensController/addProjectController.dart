@@ -8,7 +8,6 @@ import 'package:flt_imo/Utils/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class CreateProjectController extends GetxController {
   final FocusNode focus = FocusNode();

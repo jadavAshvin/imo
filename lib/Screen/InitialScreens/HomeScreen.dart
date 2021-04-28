@@ -3,7 +3,7 @@ import 'package:flt_imo/Screen/AddScreens/addBoxItem.dart';
 import 'package:flt_imo/Screen/AddScreens/addInventory.dart';
 import 'package:flt_imo/Screen/AddScreens/addLocation.dart';
 import 'package:flt_imo/Screen/Drawer/drawer.dart';
-import 'package:flt_imo/Screen/TabViewScreen/LocationView.dart';
+import 'package:flt_imo/Screen/TabViewScreen/BoxView.dart';
 import 'package:flt_imo/Screen/TabViewScreen/dashboardView.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/strings.dart';
@@ -105,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               controller: _controller,
               children: <Widget>[
                 DashboardView(),
-                LocationView(),
+                BoxView(),
                 Container(),
               ],
             ),
@@ -119,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               controller: _controller,
               tabs: [
                 Tab(text: txtDashboard),
-                Tab(text: txtLocation),
+                Tab(text: txtBoxes),
                 Tab(text: txtCollaborations),
               ],
             ),

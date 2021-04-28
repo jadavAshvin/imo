@@ -112,7 +112,7 @@ class AddInventory extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtInventoryName,
+                labelText: txtInventoryName,
               ),
               textInputAction: TextInputAction.next,
             ),

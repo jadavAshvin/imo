@@ -85,7 +85,7 @@ class BoxesListScreen extends StatelessWidget {
                       itemCount: c.boxListForDisplay.length,
                       itemBuilder: (context, index) {
                         var box = c.boxListForDisplay[index];
-                        return setBoxesView(context, Box());
+                        return setBoxesView(context, box);
                       },
                     );
         },

@@ -193,7 +193,7 @@ class AddBoxItem extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtTitle,
+                labelText: txtTitle,
               ),
               textInputAction: TextInputAction.next,
             ),
@@ -209,7 +209,7 @@ class AddBoxItem extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 // border: InputBorder.none,
-                hintText: txtDescription,
+                labelText: txtDescription,
               ),
               textInputAction: TextInputAction.newline,
             ),
@@ -400,7 +400,7 @@ class AddBoxItem extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 //  border: InputBorder.none,
-                hintText: txtPrice,
+                labelText: txtPrice,
               ),
               textInputAction: TextInputAction.next,
             ),

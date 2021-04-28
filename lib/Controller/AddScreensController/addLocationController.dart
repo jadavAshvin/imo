@@ -14,8 +14,6 @@ class AddLocationController extends GetxController {
 
   TextEditingController enterLocationNameController = TextEditingController();
   TextEditingController enterAddressController = TextEditingController();
-  TextEditingController latitudeController = TextEditingController();
-  TextEditingController longitudeController = TextEditingController();
 
   bool validate() {
     if (enterLocationNameController.text.isEmpty) {
@@ -26,14 +24,7 @@ class AddLocationController extends GetxController {
       mySnackbar(title: txtRequired, description: txtEnterAddress);
       return false;
     }
-    if (latitudeController.text.isEmpty) {
-      mySnackbar(title: txtRequired, description: txtEnterLatitute);
-      return false;
-    }
-    if (longitudeController.text.isEmpty) {
-      mySnackbar(title: txtRequired, description: txtEnterLongitude);
-      return false;
-    }
+
     return true;
   }
 
@@ -77,8 +68,8 @@ class AddLocationController extends GetxController {
     return ({
       "name": "${enterLocationNameController.text}",
       "address": "${enterAddressController.text}",
-      "latitude": double.parse(latitudeController.text),
-      "longitude": double.parse(longitudeController.text),
+      "latitude": double.parse(AppConstants.LAT),
+      "longitude": double.parse(AppConstants.LONG),
       "projectId": AppConstants.PROJECT.id
     });
   }

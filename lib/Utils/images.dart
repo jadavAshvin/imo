@@ -13,6 +13,7 @@ class Images {
   static const String MAP = "assets/images/map.png";
   static const String QRCODE = "assets/images/qrimage.png";
   static const String NO_DATA = "assets/images/no_data_image.png";
+  static const String BOX = "assets/images/box.png";
 
   //json
   static const String no_internet_connection = "assets/images/no_internet_connection.json";

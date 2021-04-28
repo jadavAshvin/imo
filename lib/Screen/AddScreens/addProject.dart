@@ -74,7 +74,7 @@ class CreateProjects extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 //  border: InputBorder.none,
-                hintText: txtEnterProjectName,
+                labelText: txtEnterProjectName,
               ),
               textInputAction: TextInputAction.next,
             ),
@@ -92,7 +92,7 @@ class CreateProjects extends StatelessWidget {
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
                 //  border: InputBorder.none,
-                hintText: txtDescription,
+                labelText: txtDescription,
               ),
               textInputAction: TextInputAction.newline,
             ),

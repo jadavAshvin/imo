@@ -1,4 +1,10 @@
+import 'dart:convert';
+
 import 'package:flt_imo/Models/boxItemModel.dart';
+
+List<Box> boxFromJson(String str) => List<Box>.from(json.decode(str).map((x) => Box.fromJson(x)));
+
+String boxToJson(List<Box> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Box {
   Box({

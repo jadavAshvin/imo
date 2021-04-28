@@ -1,17 +1,23 @@
-import 'package:flt_imo/Models/BoxesModel.dart';
+import 'package:flt_imo/Models/BoxModel.dart';
 import 'package:flt_imo/Service/boxService.dart';
 import 'package:get/get.dart';
 
 class BoxesListController extends GetxController {
   var isLoading = true.obs;
-  List<Boxes> boxList = List<Boxes>.empty(growable: true).obs;
-  List<Boxes> boxListForDisplay = List<Boxes>.empty(growable: true).obs;
+  List<Box> boxList = List<Box>.empty(growable: true).obs;
+  List<Box> boxListForDisplay = List<Box>.empty(growable: true).obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    getboxesList();
+  }
 
   getboxesList() async {
     isLoading(true);
     await boxesListApi().then((response) {
       if (response.statusCode == 200) {
-        var b = [];
+        var b = boxFromJson(response.body);
         boxList = b;
         boxListForDisplay = boxList;
       } else {
@@ -20,5 +26,9 @@ class BoxesListController extends GetxController {
       }
     });
     isLoading(false);
+  }
+
+  Future<void> boxFuture() async {
+    getboxesList();
   }
 }
