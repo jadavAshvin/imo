@@ -6,6 +6,7 @@ import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
+import 'package:flt_imo/Widgets/dialog.dart';
 import 'package:flt_imo/Widgets/noDataWidget.dart';
 import 'package:flt_imo/Widgets/pickers.dart';
 import 'package:flt_imo/Widgets/progressIndicator.dart';
@@ -16,9 +17,9 @@ import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class InventoryList extends StatelessWidget {
-  final inController = Get.put(AllInventoryListController());
   @override
   Widget build(BuildContext context) {
+    final inController = Get.put(InventoryListController());
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
@@ -37,22 +38,25 @@ class InventoryList extends StatelessWidget {
           child: bigTitle_textNormal(title: AppConstants.PROJECT.name, context: context),
         ),
       ),
-      body: SafeArea(
-        child: RefreshIndicator(
-          onRefresh: inController.getInvRefresh,
-          child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
-            child: Stack(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: setListView(context),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: setSearchView(context),
-                ),
-              ],
+      body: Container(
+        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 0),
+        child: SafeArea(
+          child: RefreshIndicator(
+            onRefresh: inController.getInvRefresh,
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 50),
+                    child: setListView(context, inController),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: setSearchView(context),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -60,7 +64,7 @@ class InventoryList extends StatelessWidget {
     );
   }
 
-  setListView(context) {
+  setListView(context, InventoryListController inController) {
     return Container(
       padding: const EdgeInsets.only(
         bottom: 10,
@@ -78,6 +82,7 @@ class InventoryList extends StatelessWidget {
                       itemCount: inController.inventoryList.length,
                       itemBuilder: (context, index) {
                         var inventory = inController.inventoryList[index];
+
                         return setBoxesView(context, inventory);
                       },
                     );
@@ -140,7 +145,34 @@ class InventoryList extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Spacer()
+                              Spacer(),
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 35.0, right: 5),
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: PopupMenuButton<PageEnum>(
+                                      onSelected: (PageEnum value) {
+                                        switch (value) {
+                                          case PageEnum.edit:
+                                            break;
+                                          case PageEnum.delete:
+                                            deleteDialog(entity: txtInventory);
+                                            break;
+                                        }
+                                      },
+                                      child: Icon(Icons.more_vert),
+                                      itemBuilder: (context) => <PopupMenuEntry<PageEnum>>[
+                                            PopupMenuItem<PageEnum>(
+                                              value: PageEnum.edit,
+                                              child: Text('Edit'),
+                                            ),
+                                            PopupMenuItem<PageEnum>(
+                                              value: PageEnum.delete,
+                                              child: Text('Delete'),
+                                            ),
+                                          ]),
+                                ),
+                              )
                             ],
                           ),
                         ],

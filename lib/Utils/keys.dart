@@ -5,6 +5,7 @@ class Keys {
   static const String ACCESS_TOKEN = "ACCESS_TOKEN";
   static const String REFRESH_TOKEN = "REFRESH_TOKEN";
   static const String USER_ID = "USER_ID";
+  static const String PROFILE_IMAGE = "PROFILE_IMAGE";
   static const String USER_NAME = "USER_NAME";
   static const String USER_EMAIL = "USER_EMAIL";
   static const String LETTITUDE = "LETTITUDE";

@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/Models/projectDetail.dart';
+import 'package:flt_imo/Service/locationService.dart';
 import 'package:flt_imo/Service/projectService.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flt_imo/Utils/strings.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:velocity_x/velocity_x.dart';
 
 class LocationController extends GetxController {
   var isLoading = true.obs;
@@ -28,6 +31,21 @@ class LocationController extends GetxController {
       }
     });
     isLoading(false);
+  }
+
+  deleteLocation(BuildContext context, id) async {
+    Future.delayed(Duration(seconds: 1), VxToast.showLoading(context, msg: "Deleting"));
+    deleteLocationApi(id).then((response) {
+      if (response == null) {
+        mySnackbar(title: txtFailed, description: "Unkown Error Occured");
+      }
+      if (response.statusCode == 200) {
+        mySnackbar(title: txtSuccess, description: "Location Deleted Successfully");
+        getLocationList();
+      } else {
+        mySnackbar(title: txtFailed, description: "Unkown Error Occured");
+      }
+    });
   }
 
   Future<void> getLocationRefresh() async {

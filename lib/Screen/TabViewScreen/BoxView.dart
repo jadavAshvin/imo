@@ -2,9 +2,12 @@ import 'package:flt_imo/Controller/BoxController/boxListingController.dart';
 import 'package:flt_imo/Models/BoxModel.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/images.dart';
+import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
+import 'package:flt_imo/Widgets/noDataWidget.dart';
 import 'package:flt_imo/Widgets/pickers.dart';
+import 'package:flt_imo/Widgets/progressIndicator.dart';
 import 'package:flt_imo/Widgets/searchBar.dart';
 import 'package:flt_imo/Widgets/text.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,23 +26,27 @@ class BoxView extends StatelessWidget {
       child: SafeArea(
         child: RefreshIndicator(
           onRefresh: boxController.boxFuture,
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 60.0),
-                child: setListView(context, boxController.boxListForDisplay),
+          child: Scrollbar(
+            thickness: 10,
+            // isAlwaysShown: true,
+            showTrackOnHover: true,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CommanSearchBar(
+                    onChanged: (text) {
+                      text = text.toLowerCase();
+                      boxController.boxListForDisplay = boxController.boxList.where((item) {
+                        var itemName = item.description.toLowerCase();
+                        return itemName.contains(text);
+                      }).toList();
+                      Get.forceAppUpdate();
+                    },
+                  ),
+                  setListView(context, boxController.boxListForDisplay),
+                ],
               ),
-              CommanSearchBar(
-                onChanged: (text) {
-                  text = text.toLowerCase();
-                  boxController.boxListForDisplay = boxController.boxList.where((item) {
-                    var itemName = item.description.toLowerCase();
-                    return itemName.contains(text);
-                  }).toList();
-                  Get.forceAppUpdate();
-                },
-              ),
-            ],
+            ),
           ),
         ),
       ),
@@ -51,15 +58,20 @@ class BoxView extends StatelessWidget {
       padding: const EdgeInsets.only(
         bottom: 10,
       ),
-      child: ListView.builder(
-        shrinkWrap: true,
-        physics: AlwaysScrollableScrollPhysics(),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          var box = items[index];
-          return expandedBox(context, box);
-        },
-      ),
+      child: Obx(() => boxController.isLoading.value
+          ? progressIndicator()
+          : boxController.boxListForDisplay.isEmpty
+              ? noDataWidget(txtBoxes)
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    var box = items[index];
+
+                    return expandedBox(context, box);
+                  },
+                )),
     ).wFull(context);
   }
 
@@ -128,8 +140,15 @@ class BoxView extends StatelessWidget {
           ),
         ],
       ),
+      childrenPadding: const EdgeInsets.symmetric(vertical: 15.0),
       tilePadding: EdgeInsets.all(20),
       children: List.generate(box.boxItem.length, (index) {
+        // if (box.boxItem.length == index) {
+        //   return Padding(
+        //     padding: const EdgeInsets.symmetric(vertical: 15.0),
+        //     child: CustomButton("Close", 10, 10, () {}),
+        //   );
+        // }
         return ItemWidget(
           boxitem: box.boxItem[index],
         );

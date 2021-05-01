@@ -13,7 +13,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 class ItemWidget extends StatelessWidget {
   final BoxItem boxitem;
-
+  final imageList = ["https://picsum.photos/410", "https://www.fillmurray.com/640/360", "https://picsum.photos/500", "https://picsum.photos/600"];
   ItemWidget({Key key, @required this.boxitem}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -87,22 +87,20 @@ class ItemWidget extends StatelessWidget {
                         ? "No Image available".text.xl3.makeCentered()
                         : CarouselSlider(
                             options: CarouselOptions(
+                              enlargeCenterPage: true,
                               autoPlay: true,
                             ),
-                            items: List.generate(boxitem.images.length, (index) {
+                            items: List.generate(imageList.length, (index) {
                               return Builder(
                                 builder: (BuildContext context) {
                                   return Container(
-                                      // width: MediaQuery.of(context).size.width,
+                                      width: MediaQuery.of(context).size.width,
                                       // decoration: BoxDecoration(color: Colors.amber),
                                       child: FadeInImage.assetNetwork(
-                                    placeholder: Images.PLACE_HOLDER,
-                                    image: boxitem.images[index],
-                                    // .replaceAll('\\', '//'),
-                                    fit: BoxFit.fitHeight,
-                                    // width: 110.0,
-                                    // height: 110.0,
-                                  ));
+                                        placeholder: Images.PLACE_HOLDER,
+                                        image: imageList[index],
+                                        fit: BoxFit.fitWidth,
+                                      ));
                                 },
                               );
                             }),

@@ -1,5 +1,6 @@
 import 'package:flt_imo/Controller/LocationController/locationListController.dart';
 import 'package:flt_imo/Models/locationModel.dart';
+import 'package:flt_imo/Screen/AddScreens/addLocation.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/images.dart';
@@ -75,7 +76,7 @@ class LocationListScreen extends StatelessWidget {
                       itemCount: c.locationListForDisplay.length,
                       itemBuilder: (context, index) {
                         var loc = c.locationListForDisplay[index];
-                        return setBoxesView(context, loc);
+                        return setBoxesView(context, loc, c);
                       },
                     );
         },
@@ -83,7 +84,7 @@ class LocationListScreen extends StatelessWidget {
     );
   }
 
-  setBoxesView(context, Location loc) {
+  setBoxesView(context, Location loc, LocationController c) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Stack(
@@ -145,11 +146,15 @@ class LocationListScreen extends StatelessWidget {
                                                 onSelected: (PageEnum value) {
                                                   switch (value) {
                                                     case PageEnum.edit:
-                                                      Get.back();
+                                                      Get.to(AddLocation(flag: 1, location: loc));
                                                       break;
                                                     case PageEnum.delete:
-                                                      Get.back();
-                                                      deleteDialog();
+                                                      deleteDialog(
+                                                          entity: txtLocation,
+                                                          function: () {
+                                                            Get.back();
+                                                            c.deleteLocation(context, loc.id);
+                                                          });
                                                       break;
                                                   }
                                                 },

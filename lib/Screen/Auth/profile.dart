@@ -1,14 +1,17 @@
 import 'package:flt_imo/Controller/AuthControllers/profileController.dart';
 import 'package:flt_imo/Screen/Auth/updatePassword.dart';
 import 'package:flt_imo/Screen/Drawer/drawer.dart';
+import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/images.dart';
+import 'package:flt_imo/Utils/keys.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
 import 'package:flt_imo/Widgets/appNewbar.dart';
 import 'package:flt_imo/Widgets/buttonWidget.dart';
 import 'package:flt_imo/Widgets/imageView.dart';
+import 'package:flt_imo/Widgets/progressIndicator.dart';
 import 'package:flt_imo/Widgets/textStyles.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,7 +19,7 @@ import 'package:get/get.dart';
 class Profile extends StatelessWidget {
   Profile({Key key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  final ProfileController updateProfileController = Get.put(ProfileController());
+  final ProfileController updateProfileController = Get.find<ProfileController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,20 +32,22 @@ class Profile extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
-        child: ListView(
-          children: [
-            FifteenSizeBox(),
-            setProfileView(context),
-            FifteenSizeBox(),
-            FifteenSizeBox(),
-            FifteenSizeBox(),
-            registerTextFieldView(context),
-            FifteenSizeBox(),
-            CustomButton(txtUpdatePasswordWith, 0, 0, () {
-              Get.bottomSheet(UpdatePassword());
-            }),
-          ],
-        ),
+        child: Obx(() => updateProfileController.isLoading.value
+            ? progressIndicator()
+            : ListView(
+                children: [
+                  FifteenSizeBox(),
+                  setProfileView(context),
+                  FifteenSizeBox(),
+                  FifteenSizeBox(),
+                  FifteenSizeBox(),
+                  registerTextFieldView(context),
+                  FifteenSizeBox(),
+                  CustomButton(txtUpdatePasswordWith, 0, 0, () {
+                    Get.bottomSheet(UpdatePassword());
+                  }),
+                ],
+              )),
       ),
     );
   }
@@ -65,7 +70,7 @@ class Profile extends StatelessWidget {
                   child: updateProfileController.imageFile.value.path == ''
                       ? FadeInImage.assetNetwork(
                           placeholder: Images.MAN,
-                          image: updateProfileController.imageFile.value.path,
+                          image: getPrefValue(Keys.PROFILE_IMAGE),
                           // .replaceAll('\\', '//'),
                           fit: BoxFit.cover,
                           width: 110.0,
@@ -101,25 +106,11 @@ class Profile extends StatelessWidget {
       children: [
         Container(
           child: TextFormField(
+            controller: updateProfileController.nameController,
             style: textFieldStyle20(),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(0.0),
-              labelText: txtFirstName,
-              labelStyle: textFieldStyle20(),
-            ),
-            textInputAction: TextInputAction.next,
-          ),
-        ),
-        TenSizeBox(),
-        SizedBox(
-          height: 5,
-        ),
-        Container(
-          child: TextFormField(
-            style: textFieldStyle20(),
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(0.0),
-              labelText: txtLastName,
+              labelText: txtFullName,
               labelStyle: textFieldStyle20(),
             ),
             textInputAction: TextInputAction.next,
@@ -141,18 +132,15 @@ class Profile extends StatelessWidget {
               Container(
                 transform: Matrix4.translationValues(-10, 0, 0),
                 child: Row(
-                  children: [buildRadio(context, label: txtMale), buildRadio(context, label: txtFemale), buildRadio(context, label: txtTransgender)],
+                  children: [buildRadio(context, label: txtMale), buildRadio(context, label: txtFemale), buildRadio(context, label: txtOther)],
                 ),
               ),
             ],
           ),
         ),
-        TenSizeBox(),
-        SizedBox(
-          height: 5,
-        ),
         Container(
           child: TextFormField(
+            controller: updateProfileController.mobileController,
             style: textFieldStyle20(),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(0.0),
@@ -168,6 +156,7 @@ class Profile extends StatelessWidget {
         ),
         Container(
           child: TextFormField(
+            controller: updateProfileController.addressController,
             style: textFieldStyle20(),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(0.0),
@@ -183,6 +172,7 @@ class Profile extends StatelessWidget {
         ),
         Container(
           child: TextFormField(
+            controller: updateProfileController.stateController,
             style: textFieldStyle20(),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(0.0),
@@ -198,6 +188,7 @@ class Profile extends StatelessWidget {
         ),
         Container(
           child: TextFormField(
+            controller: updateProfileController.countryController,
             style: textFieldStyle20(),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(0.0),
@@ -213,6 +204,7 @@ class Profile extends StatelessWidget {
         ),
         Container(
           child: TextFormField(
+            controller: updateProfileController.pinCodeController,
             style: textFieldStyle20(),
             decoration: InputDecoration(
               contentPadding: EdgeInsets.all(0.0),
@@ -226,7 +218,11 @@ class Profile extends StatelessWidget {
         SizedBox(
           height: 5,
         ),
-        CustomButton(txtUpdateProfile, 0, 0, () {}),
+        Obx(() => updateProfileController.processLoading.value
+            ? CustomButtonProgress(0, 0)
+            : CustomButton(txtUpdateProfile, 0, 0, () {
+                updateProfileController.updateProfile();
+              })),
       ],
     );
   }

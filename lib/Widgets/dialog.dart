@@ -46,7 +46,7 @@ deleteDialog({entity, function}) {
         TextButton(
           child: Text(txtNo),
           onPressed: () {
-            Get.back(result: false);
+            Get.back();
           },
         )
       ],

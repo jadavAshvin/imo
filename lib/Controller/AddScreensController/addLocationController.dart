@@ -1,3 +1,5 @@
+import 'package:flt_imo/Controller/LocationController/locationListController.dart';
+import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/NoInternetConnection/no_internet.dart';
 import 'package:flt_imo/Service/locationService.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
@@ -11,7 +13,7 @@ class AddLocationController extends GetxController {
   final FocusNode focus = FocusNode();
   var processLoading = false.obs;
   var isDetailLoading = false.obs;
-
+  var id;
   TextEditingController enterLocationNameController = TextEditingController();
   TextEditingController enterAddressController = TextEditingController();
 
@@ -34,7 +36,7 @@ class AddLocationController extends GetxController {
         if (flag == 0) {
           addLocation();
         } else {
-          Get.back();
+          updateLocation();
         }
       }
     }
@@ -62,6 +64,39 @@ class AddLocationController extends GetxController {
       printError();
       processLoading(false);
     });
+  }
+
+  updateLocation() async {
+    processLoading(true);
+    var body = setBody();
+
+    updateLocationApi(body, id).then((response) {
+      if (response == null) {
+        processLoading(false);
+        mySnackbar(title: txtFailed, description: txtUnkownError);
+      }
+      if (response.statusCode == 200) {
+        snackBarBack(title: txtSuccess, description: "Location Updated Successfully").then((value) {
+          Get.back();
+          processLoading(false);
+          Get.find<LocationController>().getLocationList();
+        });
+      } else {
+        processLoading(false);
+        mySnackbar(title: txtFailed, description: txtUnkownError);
+      }
+    }).catchError((e) {
+      printError();
+      processLoading(false);
+    });
+  }
+
+  setParam(Location loc) {
+    enterAddressController.text = loc.address;
+    enterLocationNameController.text = loc.name;
+    AppConstants.LAT = loc.latitude.toString();
+    AppConstants.LONG = loc.longitude.toString();
+    id = loc.id;
   }
 
   setBody() {

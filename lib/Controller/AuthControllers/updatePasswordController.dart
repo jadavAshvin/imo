@@ -38,7 +38,7 @@ class UpdatePasswordController extends GetxController {
     return ({
       "newPassword": "${newPasswordController.text}",
       "currentPassword": "${currentPasswordController.text}",
-      "emailAddress": "${getPrefValue(Keys.EMAIL)}"
+      "emailAddress": getPrefValue(Keys.USER_EMAIL)
     });
   }
 

@@ -27,6 +27,29 @@ Future<http.Response> locationDetailApi(id) async {
   }
 }
 
+Future<http.Response> deleteLocationApi(id) async {
+  accessController.checkOnline();
+  if (accessController.isOnline.value) {
+    var client = http.Client();
+    try {
+      var response = await client.delete(
+        BASE_URL + LOCATION + id.toString(),
+        headers: {'Authorization': getToken()},
+      );
+      print("Delete Location Response: ${response.request.url}");
+      print("Delete Location Response: ${response.body}");
+      return response;
+    } catch (e) {
+      print(e);
+      return emptyRes;
+    } finally {
+      client.close();
+    }
+  } else {
+    return emptyRes;
+  }
+}
+
 Future<http.Response> addLocationApi(body) async {
   accessController.checkOnline();
   if (accessController.isOnline.value) {
@@ -40,6 +63,31 @@ Future<http.Response> addLocationApi(body) async {
       );
       print("Add Location Response: ${response.request.url}");
       print("Add Location Response: ${response.body}");
+      return response;
+    } catch (e) {
+      print(e);
+      return emptyRes;
+    } finally {
+      client.close();
+    }
+  } else {
+    return emptyRes;
+  }
+}
+
+Future<http.Response> updateLocationApi(body, id) async {
+  accessController.checkOnline();
+  if (accessController.isOnline.value) {
+    var client = http.Client();
+    try {
+      print("Location Req $body");
+      var response = await client.put(
+        BASE_URL + LOCATION + "$id",
+        headers: {'Authorization': getToken(), "accept": "text/plain", "Content-Type": "application/json"},
+        body: jsonEncode(body),
+      );
+      print("Update Location Response: ${response.request.url}");
+      print("Update Location Response: ${response.body}");
       return response;
     } catch (e) {
       print(e);

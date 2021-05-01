@@ -18,7 +18,7 @@ class ProjectListScreen extends StatefulWidget {
 
 final MyProjectController pC = Get.put(MyProjectController());
 
-class _ProjectListScreenState extends State<ProjectListScreen> with SingleTickerProviderStateMixin {
+class _ProjectListScreenState extends State<ProjectListScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   double screenHeight;
   @override

@@ -1,3 +1,4 @@
+import 'package:flt_imo/Bindings/ProfileBinding.dart';
 import 'package:flt_imo/Screen/Auth/profile.dart';
 import 'package:flt_imo/Screen/InitialScreens/projectList.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
@@ -125,7 +126,7 @@ class DrawerOnly extends StatelessWidget {
               // ));
               break;
             case 6:
-              Get.offAll(() => Profile());
+              Get.offAll(() => Profile(), binding: ProfileBinding());
               break;
             case 7:
               logoutDialog();

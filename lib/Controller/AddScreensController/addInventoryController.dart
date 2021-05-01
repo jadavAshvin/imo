@@ -78,7 +78,7 @@ class CreateInventoryController extends GetxController {
         snackBarBack(title: txtSuccess, description: "Inventory Updated Successfully").then((v) {
           processLoading(false);
           Get.back();
-          Get.find<InventoryListController>().getInventoryList(selectedLocation.value.id.toString());
+          Get.find<InventoryListController>().getInventoryList();
         });
       } else if (response.statusCode == 700) {
         snackBarBack(title: txtFailed, description: txtUnkownError).then((v) {

@@ -78,26 +78,6 @@ class RegisterController extends GetxController {
     });
   }
 
-  updateProfilefun() {
-    processLoading(true);
-    var body = setUpdateProfile();
-    print("Update profile $body");
-    updateProfileApi(body).then((response) {
-      if (response.statusCode == 200) {
-        var res = jsonDecode(response.body);
-        snackBarBack(title: "Profile Updated Successfull", description: "${res["status"]}").then((rs) {
-          processLoading(false);
-          Get.back();
-        });
-      } else {
-        var res = jsonDecode(response.body);
-        snackBarBack(title: "Failed", description: "${res["message"]}").then((r) {
-          processLoading(false);
-        });
-      }
-    });
-  }
-
   setBody() {
     return ({
       "emailAddress": "${emailController.text}",

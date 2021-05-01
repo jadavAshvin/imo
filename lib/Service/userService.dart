@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:flt_imo/Service/constantService.dart';
-import 'package:flt_imo/Utils/app_constants.dart';
-import 'package:flt_imo/Utils/keys.dart';
 import 'package:flt_imo/Utils/urls.dart';
 import 'package:http/http.dart' as http;
 
@@ -47,15 +45,17 @@ Future<http.Response> registerApi(body) async {
   }
 }
 
-Future<http.Response> updateProfileApi(body) async {
+Future<http.Response> getUserProfile() async {
   accessController.checkOnline();
   if (accessController.isOnline.value) {
     var client = http.Client();
     try {
-      http.Response response = await client.post(BASE_URL + UPDATE_PROFILE,
-          body: jsonEncode(body), headers: {'Authorization': getToken(), "accept": "text/plain", "Content-Type": "application/json"});
-      print("Register Response: ${response.request.url}");
-      print("Register Response: ${response.body}");
+      var response = await client.get(
+        BASE_URL + GET_PROFILE,
+        headers: {'Authorization': getToken()},
+      );
+      print("User Profile Response: ${response.request.url}");
+      print("User Profile Response: ${response.body}");
       return response;
     } catch (e) {
       print(e);
@@ -65,6 +65,36 @@ Future<http.Response> updateProfileApi(body) async {
     }
   } else {
     return emptyRes;
+  }
+}
+
+Future<http.Response> updateProfileApi(body) async {
+  accessController.checkOnline();
+  if (accessController.isOnline.value) {
+    var client = http.Client();
+    var request = http.MultipartRequest('POST', Uri.parse(BASE_URL + UPDATE_PROFILE));
+    http.Response response;
+    try {
+      print("User Profile Update Body: $body");
+      // if (uploadFile != null) {
+      // final file = http.MultipartFile.fromString("ProfilePhoto", uploadFile.readAsStringSync());
+      // request.files.add(file);
+      // }
+
+      request.fields.addAll(body);
+      request.headers.addAll({'Authorization': getToken(), "Content-Type": "multipart/form-data", "api-version": "1.0"});
+      var res = await request.send();
+      response = await http.Response.fromStream(res);
+      print('Add Boxes ${res.request.url}');
+      print('Add Boxes ${response.body}');
+      print('Add Boxes ${response.statusCode}');
+      return response;
+    } catch (e) {
+      print(e);
+      return emptyRes;
+    } finally {
+      client.close();
+    }
   }
 }
 

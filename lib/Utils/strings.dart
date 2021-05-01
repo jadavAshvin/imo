@@ -15,6 +15,7 @@ final String txtLastName = "Last Name";
 final String txtMale = "Male";
 final String txtFemale = "Female";
 final String txtTransgender = "Transgender";
+final String txtOther = "Other";
 final String txtEmailAddress = "Email Address";
 final String txtAddress = "Address";
 final String txtState = "State";
@@ -78,6 +79,7 @@ final String txtProjectNameRequired = "Project Name Required";
 
 // Add Location
 final String txtAddLocation = "Add Location";
+final String txtEditLocation = "Edit Location";
 final String txtEnterLocationName = "Enter location name";
 final String txtLatitude = "Latitude";
 final String txtLongitude = "Longitude";
