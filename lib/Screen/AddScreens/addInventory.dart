@@ -1,4 +1,5 @@
 import 'package:flt_imo/Controller/AddScreensController/addInventoryController.dart';
+import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/NoInternetConnection/no_internet.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
@@ -15,8 +16,8 @@ import 'package:get/get.dart';
 
 class AddInventory extends StatelessWidget {
   final flag;
-
-  AddInventory({Key key, this.flag}) : super(key: key);
+  final Inventory inventory;
+  AddInventory({Key key, this.flag, this.inventory}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,11 @@ class AddInventory extends StatelessWidget {
         padding: const EdgeInsets.all(25.0),
         child: GetX<CreateInventoryController>(
           init: CreateInventoryController(),
-          initState: (_) {},
+          initState: (_) {
+            if (flag == 1) {
+              Get.find<CreateInventoryController>().setParam(inventory);
+            }
+          },
           builder: (c) {
             return c.isDetailLoading.value
                 ? progressIndicator()

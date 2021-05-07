@@ -1,7 +1,12 @@
 import 'package:flt_imo/Controller/AddScreensController/addBoxItemController.dart';
+import 'package:flt_imo/NoInternetConnection/no_internet.dart';
+import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/decorationConstant.dart';
+import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
+import 'package:flt_imo/Widgets/GetThings/inventoryDailog.dart';
+import 'package:flt_imo/Widgets/GetThings/locationDailog.dart';
 import 'package:flt_imo/Widgets/appNewbar.dart';
 import 'package:flt_imo/Widgets/buttonWidget.dart';
 import 'package:flt_imo/Widgets/textStyles.dart';
@@ -235,13 +240,21 @@ class AddBoxItem extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "Kitchen",
-                  style: textFieldStyle18(),
-                ),
+                child: Obx(() => Text(
+                      "${addBoxesController.selectedLocation.value.name}",
+                      style: textFieldStyle18(),
+                    )),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  if (await isConnected()) {
+                    var loc = await locationBottom(AppConstants.PROJECT.id.toString());
+                    if (loc != null) {
+                      addBoxesController.selectedLocation.value = loc;
+                      addBoxesController.update();
+                    }
+                  }
+                },
                 child: Container(
                   height: 30.0,
                   decoration: boxDecorationWhite(),
@@ -249,7 +262,7 @@ class AddBoxItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       child: Text(
-                        txtChange,
+                        txtSelect,
                         style: smallButtonStyle(),
                       ),
                     ),
@@ -269,14 +282,22 @@ class AddBoxItem extends StatelessWidget {
           Row(
             children: [
               Expanded(
-                child: Text(
-                  "My Desktop Clutter",
-                  style: textFieldStyle18(),
-                ),
+                child: Obx(() => Text(
+                      "${addBoxesController.selectedInventory.value.name}",
+                      style: textFieldStyle18(),
+                    )),
               ),
               InkWell(
-                onTap: () {
-                  Get.back();
+                onTap: () async {
+                  if (addBoxesController.selectedLocation.value.id == null) {
+                    mySnackbar(title: "Select Location", description: "Please Select Location");
+                  } else {
+                    var pro = await inventoryBottom(addBoxesController.selectedLocation.value.id.toString());
+                    if (pro != null) {
+                      addBoxesController.selectedInventory.value = pro;
+                      addBoxesController.update();
+                    }
+                  }
                 },
                 child: Container(
                   height: 30.0,
@@ -285,7 +306,7 @@ class AddBoxItem extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       child: Text(
-                        txtChange,
+                        txtSelect,
                         style: smallButtonStyle(),
                       ),
                     ),

@@ -1,3 +1,5 @@
+import 'package:flt_imo/Models/inventoryModel.dart';
+import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/Service/itemService.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flt_imo/Utils/strings.dart';
@@ -14,6 +16,8 @@ class AddItemController extends GetxController {
   var processLoading = false.obs;
   var isNegotiable = false.obs;
   List<dynamic> imageFile = List<dynamic>().obs;
+  var selectedLocation = Location(name: "Select Location").obs;
+  var selectedInventory = Inventory(name: "Select Inventory").obs;
 
   RxInt count = 0.obs;
   TextEditingController titleController = TextEditingController();

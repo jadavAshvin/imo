@@ -165,7 +165,8 @@ class AddBox extends StatelessWidget {
             padding: EdgeInsets.only(top: 3.0, bottom: 3.0),
             //decoration: boxDecoration(),
             child: TextFormField(
-              maxLines: null,
+              minLines: 3,
+              maxLines: 10,
               controller: addBoxesController.descriptionController,
               style: textFieldStyle20(),
               //  onEditingComplete: () => loginController.focus.unfocus(),
@@ -269,7 +270,7 @@ class AddBox extends StatelessWidget {
                 labelText: txtPrice,
               ),
               keyboardType: TextInputType.number,
-              textInputAction: TextInputAction.next,
+              textInputAction: TextInputAction.done,
             ),
           ),
           TenSizeBox(),

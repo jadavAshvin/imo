@@ -69,7 +69,7 @@ class ProfileController extends GetxController {
     if (validate()) {
       processLoading(true);
       var body = setBody();
-      updateProfileApi(body).then((response) {
+      updateProfileApi(body, imageFile.value).then((response) {
         if (response == null) {
           processLoading(false);
         }
@@ -136,16 +136,14 @@ class ProfileController extends GetxController {
   }
 
   Future getImageFromCamera(BuildContext context) async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker().getImage(source: ImageSource.camera);
     Navigator.pop(context);
-    imageFile.value = image;
-    binaryImage = image.readAsStringSync();
+    imageFile.value = File(image.path);
   }
 
   Future getImageFromGallery(BuildContext context) async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker().getImage(source: ImageSource.gallery);
     Navigator.pop(context);
-    imageFile.value = image;
-    binaryImage = image.readAsStringSync();
+    imageFile.value = File(image.path);
   }
 }

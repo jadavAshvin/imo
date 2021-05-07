@@ -1,4 +1,5 @@
 import 'package:flt_imo/Controller/InventoryController/inventoryListController.dart';
+import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/NoInternetConnection/no_internet.dart';
 import 'package:flt_imo/Service/inventoryService.dart';
@@ -42,6 +43,12 @@ class CreateInventoryController extends GetxController {
         }
       }
     }
+  }
+
+  setParam(Inventory inventory) {
+    inventoryNameController.text = inventory.name;
+    selectedLocation.value = Location(id: inventory.locationId);
+    upid = inventory.id;
   }
 
   setBody() {

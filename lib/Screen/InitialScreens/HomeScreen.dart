@@ -46,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           SpeedDialChild(
               label: "Item",
               onTap: () {
-                Get.off(AddBoxItem(flag: 0));
+                Get.to(AddBoxItem(flag: 0));
               },
               child: Icon(Icons.all_inbox_rounded),
               labelStyle: TextStyle(color: white),

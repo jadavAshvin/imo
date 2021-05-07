@@ -14,10 +14,16 @@ import 'package:flt_imo/Widgets/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flt_imo/Widgets/CustomSearchBar.dart';
 
-class LocationListScreen extends StatelessWidget {
+class LocationListScreen extends StatefulWidget {
   // final HomeController homeController = Get.put(HomeController());
 
+  @override
+  _LocationListScreenState createState() => _LocationListScreenState();
+}
+
+class _LocationListScreenState extends State<LocationListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -213,45 +219,59 @@ class LocationListScreen extends StatelessWidget {
   }
 
   setSearchView(context) {
+    bool showSearch = false;
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 0, right: 8.0, left: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.baseline,
-        textBaseline: TextBaseline.alphabetic,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
         children: [
-          title_text20BoldBlack(context: context, title: txtLocation),
           Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: <Widget>[
-              InkWell(
-                child: Icon(
-                  CupertinoIcons.add,
-                  size: 25,
-                ),
-                onTap: () {
-                  // Get.to(AddLocation(0, "LocationList"));
-                },
-              ),
-              TenSizeBoxWidth(),
-              InkWell(
-                child: Icon(
-                  CupertinoIcons.search,
-                  size: 25,
-                ),
-                onTap: () {},
-              ),
-              TenSizeBoxWidth(),
-              InkWell(
-                child: Icon(
-                  Icons.sort,
-                  size: 25,
-                ),
-                onTap: () {},
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              title_text20BoldBlack(context: context, title: txtLocation),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  InkWell(
+                    child: Icon(
+                      CupertinoIcons.add,
+                      size: 25,
+                    ),
+                    onTap: () {
+                      Get.to(AddLocation(flag: 0));
+                    },
+                  ),
+                  TenSizeBoxWidth(),
+                  InkWell(
+                    child: Icon(
+                      CupertinoIcons.search,
+                      size: 25,
+                    ),
+                    onTap: () {
+                      setState(() {
+                        if (showSearch == true) {
+                          showSearch = false;
+                        } else {
+                          showSearch = true;
+                        }
+                      });
+                    },
+                  ),
+                  TenSizeBoxWidth(),
+                  InkWell(
+                    child: Icon(
+                      Icons.sort,
+                      size: 25,
+                    ),
+                    onTap: () {},
+                  ),
+                ],
               ),
             ],
           ),
+          if (showSearch == true) new CustomSearchBar()
         ],
       ),
     );

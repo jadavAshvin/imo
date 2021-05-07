@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flt_imo/Service/constantService.dart';
 import 'package:flt_imo/Utils/urls.dart';
 import 'package:http/http.dart' as http;
@@ -68,7 +69,7 @@ Future<http.Response> getUserProfile() async {
   }
 }
 
-Future<http.Response> updateProfileApi(body) async {
+Future<http.Response> updateProfileApi(body, File uploadFile) async {
   accessController.checkOnline();
   if (accessController.isOnline.value) {
     var client = http.Client();
@@ -76,10 +77,10 @@ Future<http.Response> updateProfileApi(body) async {
     http.Response response;
     try {
       print("User Profile Update Body: $body");
-      // if (uploadFile != null) {
-      // final file = http.MultipartFile.fromString("ProfilePhoto", uploadFile.readAsStringSync());
-      // request.files.add(file);
-      // }
+      if (uploadFile.path != "") {
+        final file = await http.MultipartFile.fromPath("ProfilePhoto", uploadFile.path);
+        request.files.add(file);
+      }
 
       request.fields.addAll(body);
       request.headers.addAll({'Authorization': getToken(), "Content-Type": "multipart/form-data", "api-version": "1.0"});

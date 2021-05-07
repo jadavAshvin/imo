@@ -154,9 +154,12 @@ class InventoryList extends StatelessWidget {
                                       onSelected: (PageEnum value) {
                                         switch (value) {
                                           case PageEnum.edit:
+                                            Get.to(AddInventory(flag: 1, inventory: inventory));
                                             break;
                                           case PageEnum.delete:
-                                            deleteDialog(entity: txtInventory);
+                                            deleteDialog(
+                                              entity: txtInventory,
+                                            );
                                             break;
                                         }
                                       },
