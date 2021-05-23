@@ -15,7 +15,7 @@ class AddItemController extends GetxController {
   var isFragile = false.obs;
   var processLoading = false.obs;
   var isNegotiable = false.obs;
-  List<dynamic> imageFile = List<dynamic>().obs;
+  List<dynamic> imageFile = List<dynamic>.empty(growable: true).obs;
   var selectedLocation = Location(name: "Select Location").obs;
   var selectedInventory = Inventory(name: "Select Inventory").obs;
 
@@ -97,6 +97,7 @@ class AddItemController extends GetxController {
   }
 
   Future getImageFromCamera(BuildContext context) async {
+    // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
     Navigator.pop(context);
     if (image != null) {
@@ -105,6 +106,7 @@ class AddItemController extends GetxController {
   }
 
   Future getImageFromGallery(BuildContext context) async {
+    // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     Navigator.pop(context);
 

@@ -62,6 +62,7 @@ class ProfileController extends GetxController {
     stateController.text = profileModel.address.region;
     countryController.text = profileModel.address.country;
     pinCodeController.text = profileModel.address.postalCode;
+    gender.value = profileModel.gender;
     setPrefValue(Keys.REFRESH_TOKEN, profileModel.profilePicture);
   }
 

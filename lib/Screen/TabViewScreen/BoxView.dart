@@ -65,9 +65,9 @@ class BoxView extends StatelessWidget {
               : ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
-                  itemCount: items.length,
+                  itemCount: boxController.boxListForDisplay.length,
                   itemBuilder: (context, index) {
-                    var box = items[index];
+                    var box = boxController.boxListForDisplay[index];
 
                     return expandedBox(context, box);
                   },

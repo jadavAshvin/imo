@@ -15,7 +15,7 @@ class ShareScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       initialIndex: 1,
       child: Scaffold(
         backgroundColor: white,
@@ -49,9 +49,6 @@ class ShareScreen extends StatelessWidget {
               Tab(
                 text: txtCustomEmail,
               ),
-              Tab(
-                text: txtCustomMobile,
-              )
             ],
           ),
         ),
@@ -79,30 +76,6 @@ class ShareScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           setCustomEmail(),
-                          SizedBox(
-                            height: 200,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Container(
-                        // height: 100,
-                        color: white,
-                        child: setButtons(context),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                child: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          setCustomMobile(),
                           SizedBox(
                             height: 200,
                           ),
@@ -191,76 +164,13 @@ class ShareScreen extends StatelessWidget {
           ));
   }
 
-  setCustomMobile() {
-    return Obx(() => shareController.mobileIndex.value == 0
-        ? InkWell(
-            onTap: () {
-              shareController.mobileIndex += 1;
-              shareController.update();
-            },
-            child: Container(
-              height: 40.0,
-              decoration: boxDecorationWhite(),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 15),
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    child: Text(
-                      txtAddAnotherMail,
-                      style: textFieldStyle18White(),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          )
-        : ListView.separated(
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemCount: shareController.mobileIndex.value + 1,
-            itemBuilder: (BuildContext context, int index) {
-              if (index == shareController.mobileIndex.value) {
-                return Padding(
-                  padding: const EdgeInsets.only(left: 100, top: 15),
-                  child: InkWell(
-                    onTap: () {
-                      shareController.mobileIndex += 1;
-                      shareController.update();
-                    },
-                    child: Container(
-                      height: 40.0,
-                      decoration: boxDecorationWhite(),
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8, right: 8),
-                          child: Text(
-                            txtAddAnotherMobile,
-                            style: textFieldStyle18White(),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }
-              return setItemView(context, txtMobile);
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider(
-                height: 2,
-              );
-            },
-          ));
-  }
-
   dailog() {
-    List access = ['Full', 'Read Only', 'Revoke'];
+    List access = ['Full', 'Read Only'];
     return Get.defaultDialog(
       title: 'Select Access Level',
       content: Container(
         width: Get.width / 1.25,
-        height: Get.height / 5,
+        height: Get.height / 6,
         child: ListView.separated(
           itemCount: access.length,
           itemBuilder: (BuildContext context, int index) {

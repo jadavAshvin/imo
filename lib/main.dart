@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // MobileAds.instance.initialize();
   runApp(MyApp());
 }
 

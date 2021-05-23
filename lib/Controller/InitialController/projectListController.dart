@@ -1,10 +1,4 @@
-import 'package:flt_imo/Models/loginResponseModel.dart';
 import 'package:flt_imo/Models/projectModel.dart';
-import 'package:flt_imo/Screen/Auth/login.dart';
-import 'package:flt_imo/Screen/SplashScreen.dart';
-import 'package:flt_imo/Service/userService.dart';
-import 'package:flt_imo/Utils/app_constants.dart';
-import 'package:flt_imo/Utils/keys.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:get/get.dart';
 import 'package:flt_imo/Utils/strings.dart';
@@ -23,7 +17,6 @@ class MyProjectController extends GetxController {
 
   getProject() async {
     isLoading(true);
-    await silentLogin();
     await projectListApi().then((response) {
       if (response.statusCode == 200) {
         project = projectFromJson(response.body);

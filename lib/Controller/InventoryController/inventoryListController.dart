@@ -36,7 +36,7 @@ class InventoryListController extends GetxController {
     getInventoryList();
   }
 
-  deleteLocation(BuildContext context, id) async {
+  deleteInventory(BuildContext context, id) async {
     Future.delayed(Duration(seconds: 1), VxToast.showLoading(context, msg: "Deleting"));
     deleteInventoryApi(id).then((response) {
       if (response == null) {

@@ -163,7 +163,7 @@ final String txtRequired = "Required";
 //Share
 final String txtShare = "Share";
 final String txtPhoneContact = "Phone Contacts";
-final String txtCustomEmail = "Custom Emails";
+final String txtCustomEmail = "Email";
 final String txtCustomMobile = "Custom Mobiles";
 final String txtAddAnotherMail = "Add more email recipients";
 final String txtAddAnotherContact = "Add more phone contact";

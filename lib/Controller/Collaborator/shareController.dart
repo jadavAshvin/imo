@@ -5,9 +5,8 @@ class ShareController extends GetxController {
   List<Collab> mobile = List<Collab>.empty(growable: true).obs;
   List<Collab> contact = List<Collab>.empty(growable: true).obs;
   List access = ['Read Only', 'Full'];
-  var emailIndex = 2.obs;
-  var mobileIndex = 4.obs;
-  var contactIndex = 0.obs;
+  var emailIndex = 1.obs;
+  var mobileIndex = 1.obs;
 }
 
 class Collab {

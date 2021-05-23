@@ -69,6 +69,7 @@ Future<http.Response> getUserProfile() async {
   }
 }
 
+// ignore: missing_return
 Future<http.Response> updateProfileApi(body, File uploadFile) async {
   accessController.checkOnline();
   if (accessController.isOnline.value) {
@@ -86,9 +87,9 @@ Future<http.Response> updateProfileApi(body, File uploadFile) async {
       request.headers.addAll({'Authorization': getToken(), "Content-Type": "multipart/form-data", "api-version": "1.0"});
       var res = await request.send();
       response = await http.Response.fromStream(res);
-      print('Add Boxes ${res.request.url}');
-      print('Add Boxes ${response.body}');
-      print('Add Boxes ${response.statusCode}');
+      print('Update Profile ${res.request.url}');
+      print('Update Profile ${response.body}');
+      print('Update Profile ${response.statusCode}');
       return response;
     } catch (e) {
       print(e);

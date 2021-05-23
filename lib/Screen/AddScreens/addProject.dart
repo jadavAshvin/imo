@@ -1,7 +1,6 @@
 import 'package:flt_imo/Controller/AddScreensController/addProjectController.dart';
 import 'package:flt_imo/Models/projectModel.dart';
 import 'package:flt_imo/Utils/colors.dart';
-import 'package:flt_imo/Utils/images.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
 import 'package:flt_imo/Widgets/appNewbar.dart';

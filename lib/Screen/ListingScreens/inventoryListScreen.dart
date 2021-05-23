@@ -83,7 +83,7 @@ class InventoryList extends StatelessWidget {
                       itemBuilder: (context, index) {
                         var inventory = inController.inventoryList[index];
 
-                        return setBoxesView(context, inventory);
+                        return setBoxesView(context, inventory, inController);
                       },
                     );
         },
@@ -91,7 +91,7 @@ class InventoryList extends StatelessWidget {
     ).wFull(context);
   }
 
-  setBoxesView(context, Inventory inventory) {
+  setBoxesView(context, Inventory inventory, InventoryListController c) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Stack(
@@ -158,8 +158,11 @@ class InventoryList extends StatelessWidget {
                                             break;
                                           case PageEnum.delete:
                                             deleteDialog(
-                                              entity: txtInventory,
-                                            );
+                                                entity: txtInventory,
+                                                function: () {
+                                                  Get.back();
+                                                  c.deleteInventory(context, inventory.id);
+                                                });
                                             break;
                                         }
                                       },

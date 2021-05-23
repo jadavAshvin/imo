@@ -19,6 +19,7 @@ class ProfileModel {
     this.isSuccess,
     this.message,
     this.status,
+    this.gender,
   });
 
   String userId;
@@ -29,6 +30,7 @@ class ProfileModel {
   Address address;
   bool isSuccess;
   String message;
+  String gender;
   dynamic status;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
@@ -41,6 +43,7 @@ class ProfileModel {
         isSuccess: json["isSuccess"],
         message: json["message"],
         status: json["status"],
+        gender: json["gender"],
       );
 
   Map<String, dynamic> toJson() => {

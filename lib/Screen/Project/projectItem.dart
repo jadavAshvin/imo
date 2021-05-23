@@ -52,10 +52,10 @@ class ProjectItemWidget extends StatelessWidget {
                             switch (value) {
                               case PageEnum.edit:
                                 Get.back();
-                                Get.to(Get.to(CreateProjects(
+                                Get.to(CreateProjects(
                                   1,
                                   project: project,
-                                )));
+                                ));
                                 break;
                               case PageEnum.delete:
                                 Get.back();
