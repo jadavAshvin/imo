@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class InputField extends StatelessWidget {
   final TextEditingController emailController;
@@ -21,6 +22,7 @@ class InputField extends StatelessWidget {
           maxLines: 1,
           style: Theme.of(context).textTheme.subtitle2,
           keyboardType: flag == 1 ? TextInputType.emailAddress : TextInputType.number,
+          inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
           controller: emailController,
           decoration: InputDecoration(
             border: OutlineInputBorder(borderSide: BorderSide(width: 1), borderRadius: BorderRadius.all(Radius.circular(5.0))),

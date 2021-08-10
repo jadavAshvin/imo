@@ -8,10 +8,11 @@ class CustomNewAppBar extends StatelessWidget {
   final String headerTitle;
   final String rightTitle;
   final String leftCloseIcon;
-  final Color color;
-  final GlobalKey<ScaffoldState> _scaffoldKey;
-  final Function() _onTap;
-  CustomNewAppBar(this._scaffoldKey, this.headerTitle, this.rightTitle, this.leftCloseIcon, this._onTap, {this.color});
+  final Color? color;
+  final GlobalKey<ScaffoldState>? _scaffoldKey;
+  final Function()? _onTap;
+  final front;
+  CustomNewAppBar(this._scaffoldKey, this.headerTitle, this.rightTitle, this.leftCloseIcon, this._onTap, {this.color, this.front});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,29 +26,31 @@ class CustomNewAppBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              _scaffoldKey == null
-                  ? InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Padding(
-                        padding: EdgeInsets.only(left: 5.0, right: 10.0, bottom: 5.0, top: 5.0),
-                        child: Icon(Icons.arrow_back),
-                      ),
-                    )
-                  : InkWell(
-                      onTap: () {
-                        _scaffoldKey.currentState.openDrawer();
-                      },
-                      child: Container(
-                        // width: 23,
-                        // height: 17,
-                        child: Icon(
-                          Icons.menu,
-                          size: 30,
+              front != null
+                  ? Container()
+                  : _scaffoldKey == null
+                      ? InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.only(left: 5.0, right: 10.0, bottom: 5.0, top: 5.0),
+                            child: Icon(Icons.arrow_back),
+                          ),
+                        )
+                      : InkWell(
+                          onTap: () {
+                            _scaffoldKey!.currentState!.openDrawer();
+                          },
+                          child: Container(
+                            // width: 23,
+                            // height: 17,
+                            child: Icon(
+                              Icons.menu,
+                              size: 30,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
               Padding(
                 padding: EdgeInsets.only(left: 5.0, right: 5.0),
                 child: bigTitle_textNormal(title: headerTitle, context: context),

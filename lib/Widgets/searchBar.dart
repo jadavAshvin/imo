@@ -7,7 +7,7 @@ class CommanSearchBar extends StatelessWidget {
   final controller;
   final onChanged;
   final searchText;
-  CommanSearchBar({Key key, this.controller, this.onChanged, this.searchText}) : super(key: key);
+  CommanSearchBar({Key? key, this.controller, this.onChanged, this.searchText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class CommanSearchBar extends StatelessWidget {
         child: TextFormField(
           textAlign: TextAlign.start,
           textAlignVertical: TextAlignVertical.center,
-          style: Theme.of(context).textTheme.subtitle2.copyWith(fontSize: 16),
+          style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: 16),
           keyboardType: TextInputType.text,
           textInputAction: TextInputAction.search,
           decoration: InputDecoration(

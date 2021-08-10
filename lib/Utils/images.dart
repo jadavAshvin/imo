@@ -14,6 +14,8 @@ class Images {
   static const String QRCODE = "assets/images/qrimage.png";
   static const String NO_DATA = "assets/images/no_data_image.png";
   static const String BOX = "assets/images/box.png";
+  static const String FB = "assets/images/facebook.png";
+  static const String GOOGLE = "assets/images/google-plus.png";
 
   //json
   static const String no_internet_connection = "assets/images/no_internet_connection.json";

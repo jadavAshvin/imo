@@ -13,15 +13,17 @@ import 'package:flt_imo/Widgets/text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flt_imo/Screen/BoxItem/ItemWidget.dart';
 import 'package:flt_imo/Screen/Collaboration/printQr.dart';
-import 'package:flt_imo/Screen/Collaboration/share.dart';
+import 'package:share/share.dart';
 
 class BoxView extends StatelessWidget {
   final BoxesListController boxController = Get.put(BoxesListController());
   @override
   Widget build(BuildContext context) {
+    final AdWidget adWidget = AdWidget(ad: boxController.bannerAd!);
     return Container(
       child: SafeArea(
         child: RefreshIndicator(
@@ -33,11 +35,17 @@ class BoxView extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
+                  Container(
+                    alignment: Alignment.center,
+                    child: adWidget,
+                    width: MediaQuery.of(context).size.width.toDouble(),
+                    height: boxController.bannerAd!.size.height.toDouble(),
+                  ),
                   CommanSearchBar(
                     onChanged: (text) {
                       text = text.toLowerCase();
                       boxController.boxListForDisplay = boxController.boxList.where((item) {
-                        var itemName = item.description.toLowerCase();
+                        var itemName = item.description!.toLowerCase();
                         return itemName.contains(text);
                       }).toList();
                       Get.forceAppUpdate();
@@ -98,7 +106,7 @@ class BoxView extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn)}', context: context),
+                  title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn!)}', context: context),
                   TenSizeBox(),
                 ],
               ),
@@ -111,7 +119,7 @@ class BoxView extends StatelessWidget {
         children: [
           Container(
               decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(10)),
-              child: "Total Item: ${box.boxItem.length}".text.white.lg.makeCentered().p4()),
+              child: "Total Item: ${box.boxItem!.length}".text.white.lg.makeCentered().p4()),
           10.heightBox,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -119,7 +127,8 @@ class BoxView extends StatelessWidget {
               InkWell(
                 borderRadius: BorderRadius.circular(10),
                 onTap: () {
-                  Get.to(ShareScreen());
+                  // Get.to(ShareScreen());
+                  Share.share('Connect To my box using this link', subject: 'Box Connection');
                 },
                 child: Icon(
                   Icons.share,
@@ -142,7 +151,7 @@ class BoxView extends StatelessWidget {
       ),
       childrenPadding: const EdgeInsets.symmetric(vertical: 15.0),
       tilePadding: EdgeInsets.all(20),
-      children: List.generate(box.boxItem.length, (index) {
+      children: List.generate(box.boxItem!.length, (index) {
         // if (box.boxItem.length == index) {
         //   return Padding(
         //     padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -150,7 +159,7 @@ class BoxView extends StatelessWidget {
         //   );
         // }
         return ItemWidget(
-          boxitem: box.boxItem[index],
+          boxitem: box.boxItem![index],
         );
       }),
     ));

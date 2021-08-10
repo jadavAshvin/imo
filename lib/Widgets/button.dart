@@ -63,11 +63,11 @@ class CustomButtonProgress extends StatelessWidget {
 }
 
 class CalenderButton extends StatelessWidget {
-  final double left;
-  final double right;
-  final Function() onTap;
-  final String title;
-  final Color color;
+  final double? left;
+  final double? right;
+  final Function()? onTap;
+  final String? title;
+  final Color? color;
   CalenderButton({
     this.title,
     this.left,
@@ -79,7 +79,7 @@ class CalenderButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: left, right: right),
+      padding: EdgeInsets.only(left: left!, right: right!),
       child: InkWell(
         onTap: onTap,
         child: Container(
@@ -96,7 +96,7 @@ class CalenderButton extends StatelessWidget {
               children: <Widget>[
                 Icon(Icons.calendar_today, color: white),
                 TenSizeBoxWidth(),
-                Text(title, style: Theme.of(context).textTheme.button.copyWith(color: white, fontSize: 16)),
+                Text(title!, style: Theme.of(context).textTheme.button!.copyWith(color: white, fontSize: 16)),
               ],
             ),
           ),

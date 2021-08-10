@@ -1,124 +1,73 @@
-import 'dart:convert';
+import 'package:flt_imo/APIS/HttpService.dart';
+import 'package:flt_imo/APIS/ServiceConstants.dart';
+import 'package:flt_imo/APIS/httpServe.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
-import 'package:http/http.dart' as http;
-import 'package:flt_imo/Service/constantService.dart';
+import 'package:flt_imo/Utils/mySnackbar.dart';
+import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Utils/urls.dart';
+import 'package:get/get.dart';
 
-/*---------------------------Inventory Api's-------------------------- */
-Future<http.Response> inventoryDetailApi(id) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.get(
-        BASE_URL + INVENTORY + id.toString(),
-        headers: {'Authorization': getToken()},
-      );
-      print("Inventory List Response: ${response.request.url}");
-      print("Inventory List Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+class InventoryService {
+  static HttpService httpService = HttpServe();
+
+  static Future<Response?> allInventoryApi() async {
+    Response res =
+        await httpService.getRequest(PROJECT + AppConstants.PROJECT.id.toString() + PROJECT_INVENTORY).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> allInventoryApi() async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.get(
-        BASE_URL + PROJECT + AppConstants.PROJECT.id.toString() + PROJECT_INVENTORY,
-        headers: {'Authorization': getToken()},
-      );
-      print("Inventory List Response: ${response.request.url}");
-      print("Inventory List Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> getInventories(id) async {
+    Response res = await httpService.getRequest(INVENTORY + id.toString()).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> addInventoryApi(body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      print("Inventory Req $body");
-      var response = await client.post(
-        BASE_URL + ADD_INVENTORY,
-        headers: {'Authorization': getToken(), "accept": "text/plain", "Content-Type": "application/json"},
-        body: jsonEncode(body),
-      );
-      print("Inventory Response: ${response.request.url}");
-      print("Inventory Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> addInventoryApi(body) async {
+    Response res = await httpService.postRequest(ADD_INVENTORY, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 201) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> updateInventoryApi(id, body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.put(
-        BASE_URL + INVENTORY + id.toString(),
-        headers: {'Authorization': getToken(), "accept": "text/plain", "Content-Type": "application/json"},
-        body: jsonEncode(body),
-      );
-      print("Inventory List Response: ${response.request.url}");
-      print("Inventory List Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> updateInventoryApi(body, id) async {
+    Response res = await httpService.putRequest(INVENTORY + id, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> deleteInventoryApi(id) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.delete(
-        BASE_URL + INVENTORY + id.toString(),
-        headers: {'Authorization': getToken()},
-      );
-      print("Inventory List Response: ${response.request.url}");
-      print("Inventory List Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> deleteInventoryApi(id) async {
+    Response res = await httpService.deleteRequest(INVENTORY + id.toString()).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
 }

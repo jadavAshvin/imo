@@ -18,10 +18,10 @@ class Boxes {
     this.usermaster,
   });
 
-  String boxDocumentKey;
-  int inventoryId;
-  DateTime createdOn;
-  String userId;
+  String? boxDocumentKey;
+  int? inventoryId;
+  DateTime? createdOn;
+  String? userId;
   dynamic inventory;
   dynamic usermaster;
 
@@ -37,7 +37,7 @@ class Boxes {
   Map<String, dynamic> toJson() => {
         "boxDocumentKey": boxDocumentKey,
         "inventoryId": inventoryId,
-        "createdOn": createdOn.toIso8601String(),
+        "createdOn": createdOn!.toIso8601String(),
         "userId": userId,
         "inventory": inventory,
         "usermaster": usermaster,

@@ -18,10 +18,10 @@ class LoginResponse {
     this.status,
   });
 
-  Tokens tokens;
-  String userId;
-  String emailAddress;
-  bool isSuccess;
+  Tokens? tokens;
+  String? userId;
+  String? emailAddress;
+  bool? isSuccess;
   dynamic message;
   dynamic status;
 
@@ -35,7 +35,7 @@ class LoginResponse {
       );
 
   Map<String, dynamic> toJson() => {
-        "tokens": tokens.toJson(),
+        "tokens": tokens!.toJson(),
         "userId": userId,
         "emailAddress": emailAddress,
         "isSuccess": isSuccess,
@@ -52,10 +52,10 @@ class Tokens {
     this.accessToken,
   });
 
-  String idToken;
-  String refreshToken;
-  int expiresIn;
-  String accessToken;
+  String? idToken;
+  String? refreshToken;
+  int? expiresIn;
+  String? accessToken;
 
   factory Tokens.fromJson(Map<String, dynamic> json) => Tokens(
         idToken: json["idToken"],

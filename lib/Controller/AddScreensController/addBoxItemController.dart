@@ -1,12 +1,13 @@
+import 'package:flt_imo/Models/BoxModel.dart';
 import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/Service/itemService.dart';
+import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:adaptive_action_sheet/adaptive_action_sheet.dart';
 
 class AddItemController extends GetxController {
@@ -18,6 +19,7 @@ class AddItemController extends GetxController {
   List<dynamic> imageFile = List<dynamic>.empty(growable: true).obs;
   var selectedLocation = Location(name: "Select Location").obs;
   var selectedInventory = Inventory(name: "Select Inventory").obs;
+  var selectedBox = Box(title: "Select Box").obs;
 
   RxInt count = 0.obs;
   TextEditingController titleController = TextEditingController();
@@ -27,33 +29,31 @@ class AddItemController extends GetxController {
 
   setBody() {
     return ({
-      "BoxKey": "${descriptionController.text}",
+      "BoxKey": "${selectedBox.value.key}",
+      "InventoryId": "${selectedInventory.value.id}",
       "IsSaleable": "${isSaleable.value}",
-      "Price": "${priceController.text}",
+      "ProjectId": "${priceController.text}",
+      "Title": "${isNegotiable.value}",
       "IsNegotiable": "${isNegotiable.value}",
+      "Description": "${isFragile.value}",
       "IsFragile": "${isFragile.value}",
+      "Price": "${quantityController.text}",
       "Quantity": "${quantityController.text}",
     });
   }
 
   addItem(getAble) {
-    var body;
-    addItemApi(body).then((response) {
-      if (response == null) {
-        processLoading(false);
-        mySnackbar(title: txtFailed, description: txtUnkownError);
-      }
-      if (response.statusCode == 201) {
+    var body = setBody();
+    ItemService.addItemApi(body).then((response) {
+      if (response != null) {
         snackBarBack(title: txtSuccess, description: "Item Added Successfully").then((value) {
           if (getAble) {
             // Get.find<InventoryListController>().getInventoryList(AppConstants.LOCATION_OBJECT.id.toString());
             Get.back();
           }
-          processLoading(false);
+          // processLoading(false);
         });
-      } else {
         processLoading(false);
-        mySnackbar(title: txtFailed, description: txtUnkownError);
       }
     }).catchError((e) {
       printError();
@@ -98,7 +98,7 @@ class AddItemController extends GetxController {
 
   Future getImageFromCamera(BuildContext context) async {
     // ignore: deprecated_member_use
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker().getImage(source: ImageSource.camera);
     Navigator.pop(context);
     if (image != null) {
       imageFile.add(image);
@@ -107,7 +107,7 @@ class AddItemController extends GetxController {
 
   Future getImageFromGallery(BuildContext context) async {
     // ignore: deprecated_member_use
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker().getImage(source: ImageSource.gallery);
     Navigator.pop(context);
 
     if (image != null) {

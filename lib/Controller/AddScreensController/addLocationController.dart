@@ -46,65 +46,51 @@ class AddLocationController extends GetxController {
     processLoading(true);
     var body = setBody();
 
-    addLocationApi(body).then((response) {
-      if (response == null) {
-        processLoading(false);
-        mySnackbar(title: txtFailed, description: txtUnkownError);
-      }
-      if (response.statusCode == 201) {
+    await LocationService.addLocationApi(body).then((response) {
+      if (response != null) {
         snackBarBack(title: txtSuccess, description: "Location Added Successfully").then((value) {
           Get.back();
-          processLoading(false);
         });
-      } else {
-        processLoading(false);
-        mySnackbar(title: txtFailed, description: txtUnkownError);
       }
-    }).catchError((e) {
-      printError();
-      processLoading(false);
     });
+    processLoading(false);
   }
 
   updateLocation() async {
     processLoading(true);
     var body = setBody();
-
-    updateLocationApi(body, id).then((response) {
-      if (response == null) {
-        processLoading(false);
-        mySnackbar(title: txtFailed, description: txtUnkownError);
-      }
-      if (response.statusCode == 200) {
+    await LocationService.updateLocationApi(body, id).then((response) {
+      if (response != null) {
         snackBarBack(title: txtSuccess, description: "Location Updated Successfully").then((value) {
           Get.back();
           processLoading(false);
           Get.find<LocationController>().getLocationList();
         });
-      } else {
-        processLoading(false);
-        mySnackbar(title: txtFailed, description: txtUnkownError);
       }
-    }).catchError((e) {
-      printError();
-      processLoading(false);
     });
   }
 
   setParam(Location loc) {
-    enterAddressController.text = loc.address;
-    enterLocationNameController.text = loc.name;
+    enterAddressController.text = loc.address!;
+    enterLocationNameController.text = loc.name!;
     AppConstants.LAT = loc.latitude.toString();
     AppConstants.LONG = loc.longitude.toString();
     id = loc.id;
+  }
+
+  clearParam() {
+    enterAddressController.text = "";
+    enterLocationNameController.text = "";
+
+    id = "";
   }
 
   setBody() {
     return ({
       "name": "${enterLocationNameController.text}",
       "address": "${enterAddressController.text}",
-      "latitude": double.parse(AppConstants.LAT),
-      "longitude": double.parse(AppConstants.LONG),
+      "latitude": 0.0,
+      "longitude": 0.0,
       "projectId": AppConstants.PROJECT.id
     });
   }

@@ -15,7 +15,7 @@ class ProfileController extends GetxController {
   var isLoading = false.obs;
   var imageFile = File("").obs;
   var gender = txtMale.obs;
-  String binaryImage;
+  List<int>? binaryImage;
   var type;
   var subType;
   ProfileController() {
@@ -31,16 +31,12 @@ class ProfileController extends GetxController {
 
   getProfile() async {
     isLoading(true);
-    await getUserProfile().then((response) {
-      if (response.statusCode == 200) {
-        ProfileModel profileModel = profileModelFromJson(response.body);
+    await UserService.getProfileApi().then((profileModel) {
+      if (profileModel != null) {
         setParam(profileModel);
-        isLoading(false);
-      } else {
-        mySnackbar(title: "Failed", description: "Unable to get data");
-        isLoading(false);
       }
     });
+    isLoading(false);
   }
 
   bool validate() {
@@ -56,24 +52,26 @@ class ProfileController extends GetxController {
   }
 
   setParam(ProfileModel profileModel) {
-    nameController.text = profileModel.givenName;
-    mobileController.text = profileModel.phoneNumber;
-    addressController.text = profileModel.address.streetAddress;
-    stateController.text = profileModel.address.region;
-    countryController.text = profileModel.address.country;
-    pinCodeController.text = profileModel.address.postalCode;
-    gender.value = profileModel.gender;
-    setPrefValue(Keys.REFRESH_TOKEN, profileModel.profilePicture);
+    nameController.text = profileModel.givenName!;
+    mobileController.text = profileModel.phoneNumber!;
+    addressController.text = profileModel.address!.streetAddress!;
+    stateController.text = profileModel.address!.region!;
+    countryController.text = profileModel.address!.country!;
+    pinCodeController.text = profileModel.address!.postalCode!;
+    gender.value = profileModel.gender!;
+    setPrefValue(Keys.PROFILE_IMAGE, "${profileModel.profilePicture}");
   }
 
   updateProfile() {
     if (validate()) {
       processLoading(true);
-      var body = setBody();
-      updateProfileApi(body, imageFile.value).then((response) {
-        if (response == null) {
-          processLoading(false);
-        }
+      var body;
+      if (imageFile.value.path == "") {
+        body = setBody();
+      } else {
+        body = setBodyWithFile();
+      }
+      UserService.updateProfileApi(body).then((response) {
         if (response.statusCode == 200) {
           snackBarBack(title: "Updated", description: "Profile Upated Successfully").then((response) {
             processLoading(false);
@@ -97,6 +95,22 @@ class ProfileController extends GetxController {
       "State": stateController.text,
       "Country": countryController.text,
       "Pincode": pinCodeController.text,
+      "AccessToken": getPrefValue(Keys.ACCESS_TOKEN),
+    });
+  }
+
+  setBodyWithFile() {
+    final profilePhoto = MultipartFile(imageFile.value.path, filename: imageFile.value.path.split("/").last);
+    return ({
+      "GivenName": nameController.text,
+      "PhoneNumber": mobileController.text,
+      "UserId": getPrefValue(Keys.USER_ID),
+      "Gender": gender.value,
+      "Address": addressController.text,
+      "State": stateController.text,
+      "Country": countryController.text,
+      "Pincode": pinCodeController.text,
+      "ProfilePhoto": profilePhoto,
       "AccessToken": getPrefValue(Keys.ACCESS_TOKEN),
     });
   }
@@ -139,12 +153,14 @@ class ProfileController extends GetxController {
   Future getImageFromCamera(BuildContext context) async {
     var image = await ImagePicker().getImage(source: ImageSource.camera);
     Navigator.pop(context);
-    imageFile.value = File(image.path);
+    imageFile.value = File(image!.path);
+    binaryImage = await image.readAsBytes();
   }
 
   Future getImageFromGallery(BuildContext context) async {
     var image = await ImagePicker().getImage(source: ImageSource.gallery);
     Navigator.pop(context);
-    imageFile.value = File(image.path);
+    imageFile.value = File(image!.path);
+    binaryImage = await image.readAsBytes();
   }
 }

@@ -1,6 +1,7 @@
-import 'dart:convert';
-
+import 'package:flt_imo/APIS/ServiceConstants.dart';
+import 'package:flt_imo/Bindings/ProfileBinding.dart';
 import 'package:flt_imo/Models/loginResponseModel.dart';
+import 'package:flt_imo/Screen/Auth/verificationScreen.dart';
 import 'package:flt_imo/Screen/InitialScreens/projectList.dart';
 import 'package:flt_imo/Service/authService.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
@@ -44,46 +45,28 @@ class LoginController extends GetxController {
   loginfun() async {
     processLoading(true);
     var body = setBody();
-    loginApi(body).then((response) {
-      if (response.statusCode == 200) {
-        // if(l.status == "USER_UNCONFIRMED"){
-        // snackBarBack(title: "User Registered Successfull", description: "${l.message}").then((rs) {
-        // processLoading(false);
-        // Get.to(VerificationScreen(
-        //   email: emailController.text,
-        //   userId: l.userId,
-        // ));
-        // }
-        var res = jsonDecode(response.body);
-        if (res["status"] == "USER_UNCONFIRMED") {
-          snackBarBack(title: "User Registered Successfull", description: "${res["message"]}").then((rs) {
-            processLoading(false);
-            // Get.to(VerificationScreen(
-            //   email: emailController.text,
-            //   userId: res["userId"],
-            // ));
-          });
-        } else {
-          var l = loginResponseFromJson(response.body);
-          setPrefValue(Keys.AUTH_TOKEN, l.tokens.idToken.toString());
-          setPrefValue(Keys.ACCESS_TOKEN, l.tokens.accessToken.toString());
-          setPrefValue(Keys.REFRESH_TOKEN, l.tokens.refreshToken.toString());
-          setPrefValue(Keys.USER_ID, l.userId.toString());
-          setPrefValue(Keys.USER_EMAIL, l.emailAddress.toString());
-          Get.offAll(ProjectListScreen());
+    var response = await AuthService.loginApi(body).onError((error, stackTrace) => emptyRes);
 
-          processLoading(false);
-        }
-      } else {
-        var res = jsonDecode(response.body);
-        snackBarBack(title: "Login Failed", description: "${res["message"]}").then((v) {
-          processLoading(false);
+    if (response != null) {
+      var res = response.body;
+      if (res["status"] == "USER_UNCONFIRMED") {
+        snackBarBack(title: "User Registered Successfull", description: "${res["message"]}").then((rs) {
+          Get.off(VerificationScreen(
+            email: emailController.text,
+            userId: res["userId"],
+          ));
         });
+      } else {
+        var l = LoginResponse.fromJson(response.body);
+        setPrefValue(Keys.AUTH_TOKEN, l.tokens!.idToken.toString());
+        setPrefValue(Keys.ACCESS_TOKEN, l.tokens!.accessToken.toString());
+        setPrefValue(Keys.REFRESH_TOKEN, l.tokens!.refreshToken.toString());
+        setPrefValue(Keys.USER_ID, l.userId.toString());
+        setPrefValue(Keys.USER_EMAIL, l.emailAddress.toString());
+        Get.offAll(ProjectListScreen(), binding: ProfileBinding());
       }
-      if (response.statusCode == 200) {
-        processLoading(false);
-      }
-    });
+    }
+    processLoading(false);
   }
 
   setBody() {

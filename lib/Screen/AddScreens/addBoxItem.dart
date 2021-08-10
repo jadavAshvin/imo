@@ -5,6 +5,7 @@ import 'package:flt_imo/Utils/decorationConstant.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
+import 'package:flt_imo/Widgets/GetThings/boxDailog.dart';
 import 'package:flt_imo/Widgets/GetThings/inventoryDailog.dart';
 import 'package:flt_imo/Widgets/GetThings/locationDailog.dart';
 import 'package:flt_imo/Widgets/appNewbar.dart';
@@ -21,7 +22,7 @@ class AddBoxItem extends StatelessWidget {
   final AddItemController addBoxesController = Get.put(AddItemController());
   final flag;
 
-  AddBoxItem({Key key, this.flag}) : super(key: key);
+  AddBoxItem({Key? key, this.flag}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -315,6 +316,50 @@ class AddBoxItem extends StatelessWidget {
               ),
             ],
           ),
+          FifteenSizeBox(),
+          Text(
+            txtBox,
+            style: textFieldStyle20BoldUnderLine(),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Obx(() => Text(
+                      "${addBoxesController.selectedBox.value.title}",
+                      style: textFieldStyle18(),
+                    )),
+              ),
+              InkWell(
+                onTap: () async {
+                  if (addBoxesController.selectedInventory.value.id == null) {
+                    mySnackbar(title: "Select Location", description: "Please Select Inventory");
+                  } else {
+                    var pro = await boxBottom(addBoxesController.selectedInventory.value.id.toString());
+                    if (pro != null) {
+                      addBoxesController.selectedBox.value = pro;
+                      addBoxesController.update();
+                    }
+                  }
+                },
+                child: Container(
+                  height: 30.0,
+                  decoration: boxDecorationWhite(),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: Text(
+                        txtSelect,
+                        style: smallButtonStyle(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -463,8 +508,8 @@ class AddBoxItem extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isSaleable.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isSaleable.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isSaleable.value = isChecked!;
                         },
                       ),
                     ),
@@ -506,8 +551,8 @@ class AddBoxItem extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isFragile.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isFragile.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isFragile.value = isChecked!;
                         },
                       ),
                     ),
@@ -549,8 +594,8 @@ class AddBoxItem extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isNegotiable.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isNegotiable.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isNegotiable.value = isChecked!;
                         },
                       ),
                     ),

@@ -22,7 +22,7 @@ class AppConstants {
   // ignore: non_constant_identifier_names
   static String LONG = "";
   // ignore: non_constant_identifier_names
-  static String ADDRESS = "";
+  static String? ADDRESS = "";
 
 /*
   static const String NATIONALID = "NATIONALID";
@@ -145,7 +145,7 @@ getPlatform() {
   return Platform.isIOS ? '2' : '1';
 }
 
-String validateMobile(String value) {
+String? validateMobile(String value) {
   String pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
   RegExp regExp = new RegExp(pattern);
   if (value.length == 0) {

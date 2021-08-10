@@ -19,15 +19,15 @@ class LocationList {
     this.inventories,
   });
 
-  int id;
-  String name;
-  String address;
+  int? id;
+  String? name;
+  String? address;
   dynamic latitude;
   dynamic longitude;
-  int projectId;
-  DateTime createdOn;
+  int? projectId;
+  DateTime? createdOn;
   dynamic inventoriesCount;
-  List<Inventory> inventories;
+  List<Inventory>? inventories;
 
   factory LocationList.fromJson(Map<String, dynamic> json) => LocationList(
         id: json["id"],
@@ -48,8 +48,8 @@ class LocationList {
         "latitude": latitude,
         "longitude": longitude,
         "projectId": projectId,
-        "createdOn": createdOn.toIso8601String(),
+        "createdOn": createdOn!.toIso8601String(),
         "inventoriesCount": inventoriesCount,
-        "inventories": List<dynamic>.from(inventories.map((x) => x.toJson())),
+        "inventories": List<dynamic>.from(inventories!.map((x) => x.toJson())),
       };
 }

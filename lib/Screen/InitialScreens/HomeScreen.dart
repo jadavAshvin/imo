@@ -1,3 +1,4 @@
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flt_imo/Screen/AddScreens/addBox.dart';
 import 'package:flt_imo/Screen/AddScreens/addBoxItem.dart';
 import 'package:flt_imo/Screen/AddScreens/addInventory.dart';
@@ -5,9 +6,10 @@ import 'package:flt_imo/Screen/AddScreens/addLocation.dart';
 import 'package:flt_imo/Screen/Drawer/drawer.dart';
 import 'package:flt_imo/Screen/TabViewScreen/BoxView.dart';
 import 'package:flt_imo/Screen/TabViewScreen/dashboardView.dart';
+import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
-import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Widgets/appNewbar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flt_imo/Widgets/dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -20,12 +22,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  double screenHeight;
-  TabController _controller;
+  late double screenHeight;
+  int index = 0;
   @override
   void initState() {
     super.initState();
-    _controller = new TabController(length: 3, vsync: this);
   }
 
   @override
@@ -33,13 +34,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: grey200,
-      key: _scaffoldKey,
       floatingActionButton: SpeedDial(
         icon: Icons.add,
         foregroundColor: white,
         backgroundColor: primaryColor,
         renderOverlay: false,
-        overlayColor: Colors.transparent,
+        overlayColor: grey200,
         activeIcon: Icons.close,
         // animatedIcon: AnimatedIcons.menu_close,
         children: [
@@ -83,48 +83,38 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       ),
       drawer: DrawerOnly(),
       appBar: PreferredSize(
-        child: CustomNewAppBar(
-          _scaffoldKey,
-          txtProject,
-          "0",
-          "",
-          () {
-            logoutDialog();
-          },
-          color: grey200,
-        ),
+        child: CustomNewAppBar(null, AppConstants.PROJECT.name!, "0", "", () {
+          logoutDialog();
+        }, color: grey200),
         preferredSize: Size.fromHeight(100),
       ),
-      body: Stack(
-        children: [
-          Container(
-            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 50),
-            margin: EdgeInsets.only(top: 10.0),
-            height: screenHeight * 1.4,
-            child: TabBarView(
-              controller: _controller,
-              children: <Widget>[
-                DashboardView(),
-                BoxView(),
-                Container(),
-              ],
-            ),
-          ),
-          Container(
-            child: TabBar(
-              unselectedLabelColor: grey,
-              labelColor: black,
-              indicatorColor: primaryColor,
-              labelStyle: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
-              controller: _controller,
-              tabs: [
-                Tab(text: txtDashboard),
-                Tab(text: txtBoxes),
-                Tab(text: txtCollaborations),
-              ],
-            ),
-          ),
+      bottomNavigationBar: CurvedNavigationBar(
+        backgroundColor: Colors.transparent,
+        color: primaryColor,
+        buttonBackgroundColor: primaryColor,
+        height: 60,
+        index: index,
+        onTap: (value) {
+          setState(() {
+            index = value;
+          });
+        },
+        items: [
+          Icon(Icons.home, color: white),
+          Icon(Icons.inventory, color: white),
+          Icon(Icons.people, color: white),
         ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+        child: AnimatedSwitcher(
+          duration: Duration(milliseconds: 300),
+          child: [
+            DashboardView(),
+            BoxView(),
+            Container(),
+          ][index],
+        ),
       ),
     );
   }

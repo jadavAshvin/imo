@@ -1,6 +1,8 @@
 import 'package:flt_imo/Controller/BoxController/boxListingController.dart';
 import 'package:flt_imo/Models/BoxModel.dart';
 import 'package:flt_imo/Screen/AddScreens/addBox.dart';
+import 'package:flt_imo/Screen/Collaboration/printQr.dart';
+import 'package:flt_imo/Screen/ListingScreens/itemListing.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 
 import 'package:flt_imo/Utils/colors.dart';
@@ -8,6 +10,7 @@ import 'package:flt_imo/Utils/strings.dart';
 
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
+import 'package:flt_imo/Widgets/dialog.dart';
 import 'package:flt_imo/Widgets/noDataWidget.dart';
 import 'package:flt_imo/Widgets/pickers.dart';
 import 'package:flt_imo/Widgets/progressIndicator.dart';
@@ -35,18 +38,9 @@ class BoxesListScreen extends StatelessWidget {
             Get.back();
           },
         ),
-        title: Center(
-          child: bigTitle_textNormal(title: AppConstants.PROJECT.name, context: context),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.edit,
-              color: black,
-            ),
-            onPressed: () {},
-          ),
-        ],
+        centerTitle: true,
+        title: bigTitle_textNormal(title: AppConstants.PROJECT.name!, context: context),
+        actions: [],
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -85,15 +79,16 @@ class BoxesListScreen extends StatelessWidget {
                       itemCount: c.boxListForDisplay.length,
                       itemBuilder: (context, index) {
                         var box = c.boxListForDisplay[index];
-                        return setBoxesView(context, box);
+                        return setBoxesView(context, box, c);
                       },
                     );
         },
       ),
     );
   }
+  // Get.to(BoxesItemListScreen(boxId: box.key, boxName: box.title));
 
-  setBoxesView(context, Box box) {
+  setBoxesView(context, Box box, BoxesListController c) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Stack(
@@ -102,7 +97,7 @@ class BoxesListScreen extends StatelessWidget {
             padding: const EdgeInsets.only(top: 0.0, bottom: 10, left: 0),
             child: InkWell(
               onTap: () {
-                // Get.to(BoxesItemListScreen(box));
+                Get.to(BoxesItemListScreen(boxId: box.key, boxName: box.title));
               },
               child: Container(
                 transform: Matrix4.translationValues(0, 0, 0),
@@ -148,11 +143,11 @@ class BoxesListScreen extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.baseline,
                                       textBaseline: TextBaseline.alphabetic,
                                       children: <Widget>[
-                                        title_text16Bold(title: '${box.boxItem.length} Items', context: context),
+                                        title_text16Bold(title: '${box.boxItem!.length} Items', context: context),
                                         FifteenSizeBoxWidth(),
                                         FifteenSizeBoxWidth(),
                                         // Spacer(),
-                                        title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn)}', context: context),
+                                        title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn!)}', context: context),
 
                                         FifteenSizeBoxWidth(),
                                         FifteenSizeBoxWidth(),
@@ -160,6 +155,7 @@ class BoxesListScreen extends StatelessWidget {
                                         Align(
                                           alignment: Alignment.centerRight,
                                           child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               InkWell(
                                                 borderRadius: BorderRadius.circular(10),
@@ -172,9 +168,10 @@ class BoxesListScreen extends StatelessWidget {
                                                 ),
                                               ),
                                               FifteenSizeBoxWidth(),
+                                              FifteenSizeBoxWidth(),
                                               InkWell(
                                                 onTap: () {
-                                                  // Get.to(PrintQR());
+                                                  Get.to(PrintQR());
                                                 },
                                                 child: Icon(
                                                   CupertinoIcons.printer,
@@ -193,28 +190,31 @@ class BoxesListScreen extends StatelessWidget {
                               Spacer()
                             ],
                           ),
-                          InkWell(
-                            onTap: () {
-                              // Get.to(Collaborators());
-                            },
-                            child: Container(
-                              transform: Matrix4.translationValues(0, 15, 0),
-                              padding: EdgeInsets.symmetric(horizontal: 10, vertical: 9),
-                              decoration: BoxDecoration(
-                                color: primaryColor,
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () {},
+                                child: Icon(
+                                  Icons.edit,
+                                  color: greyDark,
                                 ),
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  title_text_white14(title: 'Shared with 5 others', context: context),
-                                  title_text_white14(title: "Public", context: context),
-                                ],
+                              InkWell(
+                                onTap: () {
+                                  deleteDialog(
+                                      entity: txtBox,
+                                      function: () {
+                                        Get.back();
+                                      });
+                                },
+                                child: Icon(
+                                  CupertinoIcons.delete,
+                                  color: greyDark,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),

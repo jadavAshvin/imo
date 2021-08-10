@@ -52,6 +52,7 @@ final String txtconfirmnewPassword = "Confirm New Password";
 final String txtProject = "Project";
 final String txtProjects = "Projects";
 final String txtBoxes = "Boxes";
+final String txtBox = "Box";
 final String txtStorageBox = "Storage Box";
 final String txtDashboard = "Dashboard";
 final String txtCollaborations = "Collaborations";
@@ -179,3 +180,4 @@ final String txtCollaborators = "Collaborators";
 //Message
 final String txtFailed = "Failed";
 final String txtUnkownError = "Unkown error occurred";
+final String txtUnableData = "Unable to get data";

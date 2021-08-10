@@ -1,144 +1,76 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flt_imo/Service/constantService.dart';
+
+import 'package:flt_imo/APIS/HttpService.dart';
+import 'package:flt_imo/APIS/ServiceConstants.dart';
+import 'package:flt_imo/APIS/httpServe.dart';
+import 'package:flt_imo/Models/ProfileModel.dart';
+import 'package:flt_imo/Utils/mySnackbar.dart';
+import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Utils/urls.dart';
-import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 
-Future<http.Response> silentLoginApi(body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      http.Response response =
-          await client.post(BASE_URL + SILENT_LOGIN, body: jsonEncode(body), headers: {"accept": "text/plain", "Content-Type": "application/json"});
-      print("Silent Login Response: ${response.request.url}");
-      print("Silent Login Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
-    }
-  } else {
-    return emptyRes;
-  }
-}
+class UserService {
+  static HttpService httpService = HttpServe();
 
-Future<http.Response> registerApi(body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      http.Response response =
-          await client.post(BASE_URL + REGISTER_URL, body: jsonEncode(body), headers: {"accept": "text/plain", "Content-Type": "application/json"});
-      print("Register Response: ${response.request.url}");
-      print("Register Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
-    }
-  } else {
-    return emptyRes;
-  }
-}
-
-Future<http.Response> getUserProfile() async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.get(
-        BASE_URL + GET_PROFILE,
-        headers: {'Authorization': getToken()},
-      );
-      print("User Profile Response: ${response.request.url}");
-      print("User Profile Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
-    }
-  } else {
-    return emptyRes;
-  }
-}
-
-// ignore: missing_return
-Future<http.Response> updateProfileApi(body, File uploadFile) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    var request = http.MultipartRequest('POST', Uri.parse(BASE_URL + UPDATE_PROFILE));
-    http.Response response;
-    try {
-      print("User Profile Update Body: $body");
-      if (uploadFile.path != "") {
-        final file = await http.MultipartFile.fromPath("ProfilePhoto", uploadFile.path);
-        request.files.add(file);
+  static Future<Response> updateProfileApi(body) async {
+    accessController.checkOnline();
+    if (accessController.isOnline.value) {
+      GetHttpClient httpClient = GetHttpClient();
+      late Response response;
+      FormData formData = FormData(body);
+      try {
+        response = await httpClient.post(Uri.encodeFull(BASE_URL + UPDATE_PROFILE), body: formData, headers: {
+          'Authorization': getToken(),
+        });
+        print("Request: ${response.request!.url} ");
+        print("Response: ${response.body}");
+      } on GetHttpException catch (e) {
+        print(e.message);
+        throw (e.message);
+      } finally {
+        httpClient.close();
       }
-
-      request.fields.addAll(body);
-      request.headers.addAll({'Authorization': getToken(), "Content-Type": "multipart/form-data", "api-version": "1.0"});
-      var res = await request.send();
-      response = await http.Response.fromStream(res);
-      print('Update Profile ${res.request.url}');
-      print('Update Profile ${response.body}');
-      print('Update Profile ${response.statusCode}');
       return response;
-    } catch (e) {
-      print(e);
+    } else {
       return emptyRes;
-    } finally {
-      client.close();
     }
   }
-}
 
-Future<http.Response> confirmSignupApi(body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      http.Response response =
-          await client.post(BASE_URL + GET_CODE, body: jsonEncode(body), headers: {"accept": "text/plain", "Content-Type": "application/json"});
-      print("Register Response: ${response.request.url}");
-      print("Register Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> updatePasswordApi(body) async {
+    Response res = await httpService.postRequest(UPDATE_PASSWORD, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> updatePasswordApi(body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      http.Response response = await client.post(BASE_URL + UPDATE_PASSWORD,
-          body: jsonEncode(body), headers: {"accept": "text/plain", "Content-Type": "application/json", "Authorization": getToken()});
-      print("Update Pass body: ${jsonEncode(body)}");
-      print("Update Pass Response: ${response.request.url}");
-      print("Update Pass Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> silentLoginApi(body) async {
+    Response res = await httpService.postRequest(SILENT_LOGIN, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
+  }
+
+  static Future<ProfileModel?> getProfileApi() async {
+    Response res = await httpService.getRequest(GET_PROFILE).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return profileModelFromJson(jsonEncode(res.body));
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: txtUnableData);
+      return null;
+    }
   }
 }

@@ -1,14 +1,13 @@
 import 'package:flt_imo/Controller/AuthControllers/registerController.dart';
-import 'package:flt_imo/Utils/images.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
 import 'package:flt_imo/Widgets/buttonWidget.dart';
 import 'package:flt_imo/Widgets/textStyles.dart';
-
+import 'package:flutter/services.dart';
+import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 
 class Register extends StatelessWidget {
@@ -95,7 +94,7 @@ class Register extends StatelessWidget {
         TenSizeBox(),
         Row(
           children: [
-            bottomSheetOpen(context),
+            // bottomSheetOpen(context),
             Expanded(
               flex: 4,
               child: Container(
@@ -103,6 +102,7 @@ class Register extends StatelessWidget {
                 child: TextFormField(
                   style: textFieldStyle20(),
                   keyboardType: TextInputType.number,
+                  inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
                   controller: registerController.mobileNumberController,
                   onEditingComplete: () => registerController.focus.nextFocus(),
                   decoration: InputDecoration(
@@ -129,6 +129,8 @@ class Register extends StatelessWidget {
           ),
           textInputAction: TextInputAction.next,
         ),
+        5.heightBox,
+        "Password must have one uppercase, one special character & 8 digits".text.color(Colors.red).make()
       ],
     );
   }
@@ -162,8 +164,8 @@ class Register extends StatelessWidget {
                         checkColor: Colors.white,
                         value: registerController.isChecked.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          registerController.isChecked.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          registerController.isChecked.value = isChecked!;
                           registerController.update();
                         },
                       )),
@@ -210,17 +212,6 @@ class Register extends StatelessWidget {
     );
   }
 
-  Widget lottiIconSet(BuildContext context) {
-    return Container(
-      height: 155.0,
-      width: 155.0,
-      child: Lottie.asset(
-        Images.REGISTER_JSON,
-        repeat: false,
-      ),
-    );
-  }
-
   Widget setbackButton(BuildContext context) {
     return InkWell(
       onTap: () {
@@ -248,15 +239,14 @@ class Register extends StatelessWidget {
           registerController.conCode = val.toString();
           print(registerController.conCode);
         },
-        // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-        initialSelection: 'IN',
-        favorite: ['+1', 'US'],
-        // optional. Shows only country name and flag
-        showCountryOnly: false,
+
+        showCountryOnly: true,
         // optional. Shows only country name and flag when popup is closed.
         showOnlyCountryWhenClosed: false,
         // optional. aligns the flag and the Text left
         alignLeft: false,
+        initialSelection: 'US',
+        favorite: ['+1', 'US'],
       ),
     );
   }

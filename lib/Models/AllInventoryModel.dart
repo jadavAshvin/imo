@@ -21,13 +21,13 @@ class AllInventoryModel {
     this.boxes,
   });
 
-  int id;
-  String name;
+  int? id;
+  String? name;
   dynamic locationId;
-  int projectId;
-  DateTime createdOn;
-  int boxesCount;
-  List<Box> boxes;
+  int? projectId;
+  DateTime? createdOn;
+  int? boxesCount;
+  List<Box>? boxes;
 
   factory AllInventoryModel.fromJson(Map<String, dynamic> json) => AllInventoryModel(
         id: json["id"],
@@ -44,8 +44,8 @@ class AllInventoryModel {
         "name": name,
         "locationId": locationId,
         "projectId": projectId,
-        "createdOn": createdOn.toIso8601String(),
+        "createdOn": createdOn!.toIso8601String(),
         "boxesCount": boxesCount,
-        "boxes": List<dynamic>.from(boxes.map((x) => x.toJson())),
+        "boxes": List<dynamic>.from(boxes!.map((x) => x.toJson())),
       };
 }

@@ -1,6 +1,5 @@
 import 'package:flt_imo/Models/BoxModel.dart';
 import 'package:flt_imo/Screen/Collaboration/printQr.dart';
-import 'package:flt_imo/Screen/Collaboration/share.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/images.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
@@ -11,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:share/share.dart';
 
 class BoxListScreen extends StatelessWidget {
   @override
@@ -41,7 +41,7 @@ class BoxListScreen extends StatelessWidget {
                   SizedBox(
                     height: 5,
                   ),
-                  title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn)}', context: context),
+                  title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn!)}', context: context),
                   TenSizeBox(),
                 ],
               ),
@@ -54,7 +54,7 @@ class BoxListScreen extends StatelessWidget {
         children: [
           Container(
               decoration: BoxDecoration(color: primaryColor, borderRadius: BorderRadius.circular(10)),
-              child: "Total Item: ${box.boxItem.length}".text.white.lg.makeCentered().p4()),
+              child: "Total Item: ${box.boxItem!.length}".text.white.lg.makeCentered().p4()),
           10.heightBox,
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -62,7 +62,8 @@ class BoxListScreen extends StatelessWidget {
               InkWell(
                 borderRadius: BorderRadius.circular(10),
                 onTap: () {
-                  Get.to(ShareScreen());
+                  // Get.to(ShareScreen());
+                  Share.share('Connect To my box using this link', subject: 'Box Connection');
                 },
                 child: Icon(
                   Icons.share,

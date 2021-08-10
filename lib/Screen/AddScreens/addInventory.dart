@@ -16,8 +16,8 @@ import 'package:get/get.dart';
 
 class AddInventory extends StatelessWidget {
   final flag;
-  final Inventory inventory;
-  AddInventory({Key key, this.flag, this.inventory}) : super(key: key);
+  final Inventory? inventory;
+  AddInventory({Key? key, this.flag, this.inventory}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class AddInventory extends StatelessWidget {
           init: CreateInventoryController(),
           initState: (_) {
             if (flag == 1) {
-              Get.find<CreateInventoryController>().setParam(inventory);
+              Get.find<CreateInventoryController>().setParam(inventory!);
             }
           },
           builder: (c) {

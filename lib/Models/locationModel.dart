@@ -11,14 +11,14 @@ class Location {
     this.inventories,
   });
 
-  int id;
-  String name;
-  String address;
+  int? id;
+  String? name;
+  String? address;
   dynamic latitude;
   dynamic longitude;
   dynamic projectId;
-  DateTime createdOn;
-  int inventoriesCount;
+  DateTime? createdOn;
+  int? inventoriesCount;
   dynamic inventories;
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(
@@ -40,7 +40,7 @@ class Location {
         "latitude": latitude,
         "longitude": longitude,
         "projectId": projectId,
-        "createdOn": createdOn.toIso8601String(),
+        "createdOn": createdOn!.toIso8601String(),
         "inventoriesCount": inventoriesCount,
         "inventories": inventories,
       };

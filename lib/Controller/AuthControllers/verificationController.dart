@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flt_imo/Screen/Auth/login.dart';
-import 'package:flt_imo/Service/userService.dart';
+import 'package:flt_imo/Service/authService.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class VerificationController extends GetxController {
   TextEditingController pinController = TextEditingController();
-  String pin;
+  late String pin;
   var userId;
   var emailId;
   final FocusNode focus = FocusNode();
@@ -28,22 +28,18 @@ class VerificationController extends GetxController {
     }
   }
 
-  verifyOtp() {
+  verifyOtp() async {
     processLoading(true);
     var body = setBody();
-    confirmSignupApi(body).then((response) {
-      if (response.statusCode == 200) {
+    await AuthService.confirmSignupApi(body).then((response) {
+      if (response != null) {
         var res = jsonDecode(response.body);
         snackBarBack(title: "User Verified", description: "${res["message"]}").then((r) {
           Get.offAll(Login());
-          processLoading(false);
         });
-      } else {
-        var res = jsonDecode(response.body);
-        mySnackbar(title: "Failed", description: "${res["message"]}");
-        processLoading(false);
       }
     });
+    processLoading(false);
   }
 
   setBody() {

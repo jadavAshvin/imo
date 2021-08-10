@@ -15,7 +15,7 @@ import 'package:flutter/cupertino.dart';
 class DrawerOnly extends StatelessWidget {
   final module;
 
-  const DrawerOnly({Key key, this.module}) : super(key: key);
+  const DrawerOnly({Key? key, this.module}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Container(

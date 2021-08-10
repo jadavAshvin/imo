@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: non_constant_identifier_names
-bigTitle_text({double fontSize, String title, BuildContext context}) {
+bigTitle_text({double? fontSize, required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: white,
           )
@@ -15,11 +15,11 @@ bigTitle_text({double fontSize, String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-bigTitle_blacktext({double fontSize, String title, BuildContext context}) {
+bigTitle_blacktext({double? fontSize, required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: white,
           )
@@ -27,11 +27,11 @@ bigTitle_blacktext({double fontSize, String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-bigTitle_textNormal({double fontSize, String title, BuildContext context}) {
+bigTitle_textNormal({double? fontSize, required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: black,
           )
@@ -39,11 +39,11 @@ bigTitle_textNormal({double fontSize, String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-bigTitle_textNormalGrey({double fontSize, String title, BuildContext context}) {
+bigTitle_textNormalGrey({double? fontSize, required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: black,
           )
@@ -51,11 +51,11 @@ bigTitle_textNormalGrey({double fontSize, String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-bigTitle_textBold({double fontSize, String title, BuildContext context}) {
+bigTitle_textBold({double? fontSize, required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: black,
           )
@@ -63,11 +63,11 @@ bigTitle_textBold({double fontSize, String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_grey12({String title, BuildContext context}) {
+title_text_grey12({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: white,
           )
@@ -75,11 +75,11 @@ title_text_grey12({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_white12({String title, BuildContext context}) {
+title_text_white12({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: white,
           )
@@ -87,11 +87,11 @@ title_text_white12({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_white14({String title, BuildContext context}) {
+title_text_white14({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: white,
           )
@@ -99,11 +99,11 @@ title_text_white14({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_black14({String title, BuildContext context}) {
+title_text_black14({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .headline3
+          .headline3!
           .copyWith(
             color: white,
           )
@@ -111,11 +111,11 @@ title_text_black14({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_black16({String title, BuildContext context}) {
+title_text_black16({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .headline3
+          .headline3!
           .copyWith(
             color: white,
           )
@@ -123,11 +123,11 @@ title_text_black16({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_grey14({String title, BuildContext context}) {
+title_text_grey14({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .headline2
+          .headline2!
           .copyWith(
             color: black,
           )
@@ -135,11 +135,11 @@ title_text_grey14({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_grey16({String title, BuildContext context}) {
+title_text_grey16({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .headline2
+          .headline2!
           .copyWith(
             color: black,
           )
@@ -147,33 +147,33 @@ title_text_grey16({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_black16bold({String title, BuildContext context}) {
+title_text_black16bold({required String title, required BuildContext context}) {
   return Text(title,
-      style: Theme.of(context).textTheme.headline2.copyWith(color: black, fontWeight: FontWeight.bold).copyWith(color: black, fontSize: 16));
+      style: Theme.of(context).textTheme.headline2!.copyWith(color: black, fontWeight: FontWeight.bold).copyWith(color: black, fontSize: 16));
 }
 
 // ignore: non_constant_identifier_names
-title_text_white16bold({String title, BuildContext context}) {
+title_text_white16bold({required String title, required BuildContext context}) {
   return Text(title,
-      style: Theme.of(context).textTheme.headline2.copyWith(color: white, fontWeight: FontWeight.bold).copyWith(color: white, fontSize: 16));
+      style: Theme.of(context).textTheme.headline2!.copyWith(color: white, fontWeight: FontWeight.bold).copyWith(color: white, fontSize: 16));
 }
 
 // ignore: non_constant_identifier_names
-title_text18Normalbody({String title, BuildContext context}) {
-  return Text(title, style: Theme.of(context).textTheme.bodyText1.copyWith(color: white, fontSize: 18));
+title_text18Normalbody({required String title, required BuildContext context}) {
+  return Text(title, style: Theme.of(context).textTheme.bodyText1!.copyWith(color: white, fontSize: 18));
 }
 
 // ignore: non_constant_identifier_names
-title_text18Normal({String title, BuildContext context}) {
+title_text18Normal({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 18, color: black));
 }
 
 // ignore: non_constant_identifier_names
-title_text18NormalGrey({String title, BuildContext context}) {
+title_text18NormalGrey({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .headline3
+          .headline3!
           .copyWith(
             fontWeight: FontWeight.w300,
             color: white,
@@ -182,11 +182,11 @@ title_text18NormalGrey({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text18NormalWhite({String title, BuildContext context}) {
+title_text18NormalWhite({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 18, color: black));
 }
 
-Widget textFieldTitle({double fontSize, String title}) {
+Widget textFieldTitle({double? fontSize, required String title}) {
   return Text(
     title,
     style: TextStyle(fontSize: fontSize, color: subTitleColor, fontWeight: FontWeight.bold),
@@ -195,46 +195,46 @@ Widget textFieldTitle({double fontSize, String title}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text18Bold({String title, BuildContext context}) {
+title_text18Bold({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black));
 }
 
 // ignore: non_constant_identifier_names
-title_text16Bold({String title, BuildContext context}) {
+title_text16Bold({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: black));
 }
 
 // ignore: non_constant_identifier_names
-title_text20BoldWhite({String title, BuildContext context}) {
+title_text20BoldWhite({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: white));
 }
 
 // ignore: non_constant_identifier_names
-title_text26NormalBlack({String title, BuildContext context}) {
+title_text26NormalBlack({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 26, color: black));
 }
 
 // ignore: non_constant_identifier_names
-title_text20NormalWhite({String title, BuildContext context}) {
+title_text20NormalWhite({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 20, color: white));
 }
 
 // ignore: non_constant_identifier_names
-title_text20BoldBlack({String title, BuildContext context}) {
+title_text20BoldBlack({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: black));
 }
 
 // ignore: non_constant_identifier_names
-title_text20NormalBlack({String title, BuildContext context}) {
+title_text20NormalBlack({required String title, BuildContext? context}) {
   return Text(title, style: TextStyle(fontSize: 20, color: black));
 }
 
 // ignore: non_constant_identifier_names
-title_text_grey11({String title, BuildContext context}) {
+title_text_grey11({required String title, required BuildContext context}) {
   return Text(title,
       style: Theme.of(context)
           .textTheme
-          .button
+          .button!
           .copyWith(
             color: white,
           )
@@ -242,16 +242,16 @@ title_text_grey11({String title, BuildContext context}) {
 }
 
 // ignore: non_constant_identifier_names
-title_text_grey13({String title, BuildContext context}) {
-  return Text(title, style: Theme.of(context).textTheme.button.copyWith().copyWith(color: grey, fontSize: 13.0));
+title_text_grey13({required String title, required BuildContext context}) {
+  return Text(title, style: Theme.of(context).textTheme.button!.copyWith().copyWith(color: grey, fontSize: 13.0));
 }
 
 // ignore: non_constant_identifier_names
-title_text_grey17head({String title, BuildContext context}) {
-  return Text(title, style: Theme.of(context).textTheme.bodyText2.copyWith().copyWith(color: grey, fontSize: 17.0, fontWeight: FontWeight.w300));
+title_text_grey17head({required String title, required BuildContext context}) {
+  return Text(title, style: Theme.of(context).textTheme.bodyText2!.copyWith().copyWith(color: grey, fontSize: 17.0, fontWeight: FontWeight.w300));
 }
 
 // ignore: non_constant_identifier_names
-title_text_black13({String title, BuildContext context}) {
-  return Text(title, style: Theme.of(context).textTheme.button.copyWith().copyWith(color: black, fontSize: 13.0));
+title_text_black13({required String title, required BuildContext context}) {
+  return Text(title, style: Theme.of(context).textTheme.button!.copyWith().copyWith(color: black, fontSize: 13.0));
 }

@@ -41,7 +41,7 @@ class ShareScreen extends StatelessWidget {
             unselectedLabelColor: grey,
             labelColor: black,
             indicatorColor: grey,
-            labelStyle: Theme.of(context).textTheme.bodyText1.copyWith(fontSize: 18),
+            labelStyle: Theme.of(context).textTheme.bodyText1!.copyWith(fontSize: 18),
             tabs: [
               Tab(
                 text: txtPhoneContact,

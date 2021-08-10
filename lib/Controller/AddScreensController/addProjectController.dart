@@ -14,7 +14,7 @@ class CreateProjectController extends GetxController {
   var isDetailLoading = false.obs;
   var processLoading = false.obs;
   var imageFile = File("").obs;
-  Project project;
+  late Project project;
   TextEditingController projectNameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -33,56 +33,48 @@ class CreateProjectController extends GetxController {
   setParam(Project pro) {
     project = pro;
     projectNameController.text = "${pro.name}";
-    descriptionController.text = pro.description == "N/A" ? "" : pro.description;
+    descriptionController.text = pro.description == "N/A" ? "" : pro.description!;
   }
 
-  addBtn(flag, getable) async {
+  addBtn(flag) async {
     if (await isConnected()) {
       if (validate()) {
         if (flag == 0) {
-          addProject(getable);
+          addProject();
         } else {
-          updateProject(getable);
+          updateProject();
         }
       }
     }
   }
 
-  addProject(getable) {
+  addProject() async {
     processLoading(true);
     var body = setBody();
-    addProjectApi(body).then((response) {
-      if (response.statusCode == 201) {
+    await ProjectService.addProjectApi(body).then((response) {
+      if (response != null) {
         snackBarBack(title: txtSuccess, description: txtProcjectCreated).then((r) {
-          if (getable) {
-            Get.find<MyProjectController>().getProject();
-          }
+          Get.find<MyProjectController>().getProject();
+
           Get.back();
-          processLoading(false);
         });
-      } else {
-        mySnackbar(title: txtFailed, description: "");
-        processLoading(false);
       }
     });
+    processLoading(false);
   }
 
-  updateProject(getable) {
+  updateProject() async {
     processLoading(true);
     var body = setBody();
-    updateProjectApi(body, project.id.toString()).then((response) {
-      if (response.statusCode == 200) {
+    await ProjectService.updateProjectApi(body, project.id.toString()).then((response) {
+      if (response != null) {
         snackBarBack(title: txtSuccess, description: txtProcjectCreated).then((r) {
-          if (getable) {
-            Get.find<MyProjectController>().getProject();
-          }
+          Get.find<MyProjectController>().getProject();
+
           Get.back();
-          processLoading(false);
         });
-      } else {
-        mySnackbar(title: txtFailed, description: "");
-        processLoading(false);
       }
     });
+    processLoading(false);
   }
 }

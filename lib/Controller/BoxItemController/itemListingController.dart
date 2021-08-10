@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flt_imo/Models/boxItemModel.dart';
 import 'package:flt_imo/Service/itemService.dart';
 import 'package:get/get.dart';
@@ -9,9 +11,9 @@ class BoxesItemController extends GetxController {
 
   getItemList() async {
     isLoading(true);
-    await itemListApi().then((response) {
-      if (response.statusCode == 200) {
-        var i = boxItemFromJson(response.body);
+    await ItemService.itemListApi().then((response) {
+      if (response != null) {
+        var i = boxItemFromJson(jsonEncode(response.body));
         itemList = i;
         itemListForDisplay = itemList;
       } else {
