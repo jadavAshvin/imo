@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>flt_imo</string>
+	<string>I'm Organized</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -19,9 +19,33 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Play using while you are hiking</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>I'm Organized would like to access your calender</string>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the photo library to upload your project creation.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>This app requires contacts access to function properly.</string>
+	<key>NSContactsUsageDescription </key>
+	<string>This app requires contacts access to function properly.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>IMO needs Location access so near by user can find you easily!</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>IMO needs Location access so near by user can find you easily!</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Your location is required so near by user can find you easily your items</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>This app does not require access to the microphone.</string>
+	<key>NSMotionUsageDescription</key>
+	<string>This app needs to be able to access your motion use</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>IMO We need access to photo gallery so you can choose image to set as your project creation.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>recognize speech</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
