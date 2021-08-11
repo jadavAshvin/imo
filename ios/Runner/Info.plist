@@ -24,6 +24,10 @@
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
 	<string>Play using while you are hiking</string>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Just Bluetooth</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Just for Bluetooth</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>I'm Organized would like to access your calender</string>
 	<key>NSCameraUsageDescription</key>
