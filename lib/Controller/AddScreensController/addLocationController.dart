@@ -1,4 +1,5 @@
 import 'package:flt_imo/Controller/LocationController/locationListController.dart';
+import 'package:flt_imo/Controller/TabViewController/dashboardController.dart';
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/NoInternetConnection/no_internet.dart';
 import 'package:flt_imo/Service/locationService.dart';
@@ -48,6 +49,7 @@ class AddLocationController extends GetxController {
 
     await LocationService.addLocationApi(body).then((response) {
       if (response != null) {
+        Get.find<DashboardController>().getRefreshData();
         snackBarBack(title: txtSuccess, description: "Location Added Successfully").then((value) {
           Get.back();
         });

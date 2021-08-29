@@ -1,7 +1,9 @@
+import 'package:flt_imo/Controller/TabViewController/dashboardController.dart';
 import 'package:flt_imo/Models/BoxModel.dart';
 import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/Service/itemService.dart';
+import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flt_imo/Utils/strings.dart';
@@ -27,22 +29,35 @@ class AddItemController extends GetxController {
   TextEditingController priceController = TextEditingController();
   TextEditingController quantityController = TextEditingController();
 
+  clearParam() {
+    selectedBox.value = Box(title: "Select Box");
+    selectedInventory.value = Inventory(name: "Select Inventory");
+    isSaleable.value = false;
+    isNegotiable.value = false;
+    isFragile.value = false;
+    titleController.text = "";
+    descriptionController.text = "";
+    priceController.text = "";
+    count.value = 0;
+  }
+
   setBody() {
     return ({
       "BoxKey": "${selectedBox.value.key}",
       "InventoryId": "${selectedInventory.value.id}",
       "IsSaleable": "${isSaleable.value}",
-      "ProjectId": "${priceController.text}",
-      "Title": "${isNegotiable.value}",
+      "ProjectId": "${AppConstants.PROJECT.id}",
+      "Title": "${titleController.text}",
       "IsNegotiable": "${isNegotiable.value}",
-      "Description": "${isFragile.value}",
+      "Description": "${descriptionController.text}",
       "IsFragile": "${isFragile.value}",
-      "Price": "${quantityController.text}",
-      "Quantity": "${quantityController.text}",
+      "Price": "${priceController.text}",
+      "Quantity": count.value,
     });
   }
 
   addItem(getAble) {
+    processLoading(true);
     var body = setBody();
     ItemService.addItemApi(body).then((response) {
       if (response != null) {
@@ -50,6 +65,7 @@ class AddItemController extends GetxController {
           if (getAble) {
             // Get.find<InventoryListController>().getInventoryList(AppConstants.LOCATION_OBJECT.id.toString());
             Get.back();
+            Get.find<DashboardController>().getRefreshData();
           }
           // processLoading(false);
         });

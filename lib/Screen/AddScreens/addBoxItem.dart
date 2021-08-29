@@ -131,6 +131,7 @@ class AddBoxItem extends StatelessWidget {
         padding: const EdgeInsets.only(left: 21, right: 21),
         child: Obx(() {
           return GridView.count(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 3,
             childAspectRatio: 1,
@@ -210,7 +211,7 @@ class AddBoxItem extends StatelessWidget {
             //decoration: boxDecoration(),
             child: TextFormField(
               maxLines: null,
-              controller: addBoxesController.priceController,
+              controller: addBoxesController.descriptionController,
               style: textFieldStyle20(),
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
@@ -621,7 +622,11 @@ class AddBoxItem extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 50),
       child: Column(
         children: [
-          CustomButton(txtSave, 0, 0, () {}),
+          Obx(() => addBoxesController.processLoading.value
+              ? CustomButtonProgress(0, 0)
+              : CustomButton(txtSave, 0, 0, () {
+                  addBoxesController.addItem(true);
+                })),
           if (flag == 0) TenSizeBox(),
           if (flag == 0) CustomButton(txtSaveAndAddAnotherItem, 0, 0, () {}),
         ],

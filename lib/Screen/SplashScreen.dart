@@ -4,6 +4,7 @@ import 'package:flt_imo/Bindings/ProfileBinding.dart';
 import 'package:flt_imo/Controller/GeneralController/accessController.dart';
 import 'package:flt_imo/Models/loginResponseModel.dart';
 import 'package:flt_imo/Screen/Auth/login.dart';
+import 'package:flt_imo/Screen/Auth/verificationScreen.dart';
 import 'package:flt_imo/Screen/InitialScreens/projectList.dart';
 import 'package:flt_imo/Service/userService.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
@@ -25,6 +26,7 @@ silentLogin() {
       setPrefValue(Keys.AUTH_TOKEN, "");
       setPrefValue(Keys.ACCESS_TOKEN, "");
       setPrefValue(Keys.REFRESH_TOKEN, "");
+
       Get.offAll(Login());
     }
   });
@@ -49,7 +51,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {
       if (getPrefValue(Keys.AUTH_TOKEN).isNotEmpty) {
-        Get.offAll(() => ProjectListScreen(), binding: ProfileBinding());
+        if (getPrefValue(Keys.VERIFIED_USER) == "Verified") {
+          Get.off(VerificationScreen(
+            email: getPrefValue(Keys.EMAIL),
+            userId: getPrefValue(Keys.USER_ID),
+          ));
+        } else {
+          Get.offAll(() => ProjectListScreen(), binding: ProfileBinding());
+        }
       } else {
         Get.offAll(() => Login());
       }

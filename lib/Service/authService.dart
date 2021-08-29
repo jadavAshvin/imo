@@ -15,8 +15,12 @@ class AuthService {
     } else if (res.statusCode == 700) {
       mySnackbar(title: txtFailed, description: txtUnkownError);
       return null;
+    } else if (res.statusCode == 400) {
+      snackBarBack(title: "User Unconfirmed", description: "${res.body["message"]}");
+      return res;
     } else {
       snackBarBack(title: "Login Failed", description: "${res.body["message"]}");
+      return null;
     }
   }
 

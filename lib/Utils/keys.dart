@@ -2,6 +2,7 @@ class Keys {
   static const String EMAIL = "EMAIL";
   static const String CUSTOMERID = "CUSTOMERID";
   static const String AUTH_TOKEN = "AUTH_TOKEN";
+  static const String VERIFIED_USER = "VERIFIED_USER";
   static const String ACCESS_TOKEN = "ACCESS_TOKEN";
   static const String REFRESH_TOKEN = "REFRESH_TOKEN";
   static const String USER_ID = "USER_ID";

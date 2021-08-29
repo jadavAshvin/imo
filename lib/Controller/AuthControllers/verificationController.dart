@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flt_imo/Screen/Auth/login.dart';
 import 'package:flt_imo/Service/authService.dart';
+import 'package:flt_imo/Utils/app_constants.dart';
+import 'package:flt_imo/Utils/keys.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,9 +35,10 @@ class VerificationController extends GetxController {
     var body = setBody();
     await AuthService.confirmSignupApi(body).then((response) {
       if (response != null) {
-        var res = jsonDecode(response.body);
-        snackBarBack(title: "User Verified", description: "${res["message"]}").then((r) {
+        var res = response.body;
+        snackBarBack(title: "User Verified", description: "${res['message']}").then((r) {
           Get.offAll(Login());
+          setPrefValue(Keys.VERIFIED_USER, "Verified");
         });
       }
     });

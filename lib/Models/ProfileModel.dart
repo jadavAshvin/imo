@@ -39,7 +39,7 @@ class ProfileModel {
         phoneNumber: json["phoneNumber"],
         emailAddress: json["emailAddress"],
         profilePicture: json["profilePicture"],
-        address: Address.fromJson(json["address"]),
+        address: json["address"] == null ? Address(country: "", postalCode: "", region: "", streetAddress: "") : Address.fromJson(json["address"]),
         isSuccess: json["isSuccess"],
         message: json["message"],
         status: json["status"],
