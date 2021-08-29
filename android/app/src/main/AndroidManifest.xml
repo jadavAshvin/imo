@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.imorganizedapp">
    <application
-        android:label="flt_imo"
+        android:label="I'm Organized"
         android:icon="@mipmap/ic_launcher">
         
         <activity
@@ -34,7 +34,7 @@
         </activity>
          <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7629926756130020~2941095519"/>
+                    android:value="ca-app-pub-7629926756130020~2941095519"/>
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
