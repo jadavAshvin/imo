@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flt_imo/Models/BoxModel.dart';
 import 'package:flt_imo/Service/boxService.dart';
+import 'package:flt_imo/Service/inventoryService.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -39,6 +40,21 @@ class BoxesListController extends GetxController {
     bannerAd?.dispose();
     bannerAd = null;
     super.dispose();
+  }
+
+  getboxes(id) async {
+    isLoading(true);
+    await InventoryService.getInventories(id).then((response) {
+      if (response != null) {
+        var b = boxFromJson(jsonEncode(response.body["boxes"]));
+        boxList = b;
+        boxListForDisplay = boxList;
+      } else {
+        boxList = [];
+        boxListForDisplay = boxList;
+      }
+    });
+    isLoading(false);
   }
 
   getboxesList() async {

@@ -47,7 +47,13 @@ class InventoryList extends StatelessWidget {
         padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 0),
         child: SafeArea(
           child: RefreshIndicator(
-            onRefresh: inController.getInvRefresh,
+            onRefresh: () async {
+              if (inventory != null) {
+                inController.getInventories(inventory);
+              } else {
+                inController.getInventoryList();
+              }
+            },
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Stack(
@@ -113,7 +119,10 @@ class InventoryList extends StatelessWidget {
             padding: const EdgeInsets.only(top: 0.0, bottom: 10, left: 0),
             child: InkWell(
               onTap: () {
-                // Get.to(BoxesListScreen());
+                Get.to(BoxesListScreen(
+                  box: inventory,
+                  boxName: inventory.name,
+                ));
               },
               child: Container(
                 transform: Matrix4.translationValues(0, 0, 0),

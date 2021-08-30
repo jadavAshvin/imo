@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flt_imo/Bindings/ProfileBinding.dart';
 import 'package:flt_imo/Controller/GeneralController/accessController.dart';
@@ -17,7 +18,7 @@ silentLogin() {
   var body = {"userId": getPrefValue(Keys.USER_ID), "refreshToken": getPrefValue(Keys.REFRESH_TOKEN)};
   UserService.silentLoginApi(body).then((response) {
     if (response != null) {
-      var l = loginResponseFromJson(response.body);
+      var l = loginResponseFromJson(jsonEncode(response.body));
       setPrefValue(Keys.AUTH_TOKEN, l.tokens!.idToken.toString());
       setPrefValue(Keys.ACCESS_TOKEN, l.tokens!.accessToken.toString());
       // setPrefValue(Keys.REFRESH_TOKEN, l.tokens.refreshToken.toString());
@@ -51,14 +52,14 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {
       if (getPrefValue(Keys.AUTH_TOKEN).isNotEmpty) {
-        if (getPrefValue(Keys.VERIFIED_USER) == "Verified") {
-          Get.off(VerificationScreen(
-            email: getPrefValue(Keys.EMAIL),
-            userId: getPrefValue(Keys.USER_ID),
-          ));
-        } else {
-          Get.offAll(() => ProjectListScreen(), binding: ProfileBinding());
-        }
+        // if (getPrefValue(Keys.VERIFIED_USER) != "Verified") {
+        //   Get.off(VerificationScreen(
+        //     email: getPrefValue(Keys.EMAIL),
+        //     userId: getPrefValue(Keys.USER_ID),
+        //   ));
+        // } else {
+        Get.offAll(() => ProjectListScreen(), binding: ProfileBinding());
+        // }
       } else {
         Get.offAll(() => Login());
       }

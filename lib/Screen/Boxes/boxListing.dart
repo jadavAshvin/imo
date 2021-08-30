@@ -20,6 +20,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class BoxesListScreen extends StatelessWidget {
+  final box;
+  final boxName;
+  BoxesListScreen({Key? key, this.box, this.boxName}) : super(key: key);
   // final HomeController homeController = Get.put(HomeController())00;
 
   @override
@@ -39,18 +42,27 @@ class BoxesListScreen extends StatelessWidget {
           },
         ),
         centerTitle: true,
-        title: bigTitle_textNormal(title: AppConstants.PROJECT.name!, context: context),
+        title: bigTitle_textNormal(title: boxName != null ? boxName : AppConstants.PROJECT.name!, context: context),
         actions: [],
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Column(
-              children: <Widget>[
-                setSearchView(context),
-                setListView(context),
-              ],
+        child: RefreshIndicator(
+          onRefresh: () async {
+            if (box != null) {
+              Get.find<BoxesListController>().getboxes(box.id);
+            } else {
+              Get.find<BoxesListController>().getboxesList();
+            }
+          },
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                children: <Widget>[
+                  setSearchView(context),
+                  setListView(context),
+                ],
+              ),
             ),
           ),
         ),

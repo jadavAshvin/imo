@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/Service/inventoryService.dart';
+import 'package:flt_imo/Service/locationService.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +35,9 @@ class InventoryListController extends GetxController {
 
   getInventories(id) async {
     isLoading(true);
-    await InventoryService.getInventories(id).then((response) {
+    await LocationService.locationDetailApi(id).then((response) {
       if (response != null) {
-        var i = inventoryFromJson(jsonEncode(response.body));
+        var i = inventoryFromJson(jsonEncode(response.body["inventories"]));
         inventoryList = i;
         print("Inventory : $inventoryList");
         inventoryListForDisplay = inventoryList;

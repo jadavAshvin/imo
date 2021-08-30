@@ -90,7 +90,7 @@ class BoxesItemListScreen extends StatelessWidget {
         textBaseline: TextBaseline.alphabetic,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          title_text20BoldBlack(context: context, title: txtBoxes),
+          title_text20BoldBlack(context: context, title: txtItem),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,
