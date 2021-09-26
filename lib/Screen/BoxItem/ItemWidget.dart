@@ -9,12 +9,11 @@ import 'package:flt_imo/Widgets/pickers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 
 class ItemWidget extends StatelessWidget {
   final BoxItem boxitem;
   final imageList = ["https://picsum.photos/410", "https://www.fillmurray.com/640/360", "https://picsum.photos/500", "https://picsum.photos/600"];
-  ItemWidget({Key key, @required this.boxitem}) : super(key: key);
+  ItemWidget({Key? key, required this.boxitem}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,7 +40,7 @@ class ItemWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "${dateFormat.format(boxitem.createdOn)}",
+                        "${dateFormat.format(boxitem.createdOn!)}",
                         style: TextStyle(
                           color: headerTextColor,
                         ),
@@ -81,31 +80,45 @@ class ItemWidget extends StatelessWidget {
                   ).wFull(context),
                   TenSizeBox(),
                   Container(
-                    height: 170,
-                    width: Get.width,
-                    child: boxitem.images.isEmpty
-                        ? "No Image available".text.xl3.makeCentered()
-                        : CarouselSlider(
-                            options: CarouselOptions(
-                              enlargeCenterPage: true,
-                              autoPlay: true,
-                            ),
-                            items: List.generate(imageList.length, (index) {
-                              return Builder(
-                                builder: (BuildContext context) {
-                                  return Container(
-                                      width: MediaQuery.of(context).size.width,
-                                      // decoration: BoxDecoration(color: Colors.amber),
-                                      child: FadeInImage.assetNetwork(
-                                        placeholder: Images.PLACE_HOLDER,
-                                        image: imageList[index],
-                                        fit: BoxFit.fitWidth,
-                                      ));
-                                },
-                              );
-                            }),
-                          ),
-                  ),
+                      height: 170,
+                      width: Get.width,
+                      child: boxitem.images!.isEmpty
+                          ? "No Image available".text.xl3.makeCentered()
+                          : VxSwiper.builder(
+                              itemCount: imageList.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    // decoration: BoxDecoration(color: Colors.amber),
+                                    child: FadeInImage.assetNetwork(
+                                      placeholder: Images.PLACE_HOLDER,
+                                      image: imageList[index],
+                                      fit: BoxFit.fitWidth,
+                                    ));
+                              },
+                            )
+
+                      // CarouselSlider(
+                      //     options: CarouselOptions(
+                      //       enlargeCenterPage: true,
+                      //       autoPlay: true,
+                      //     ),
+                      //     items: List.generate(imageList.length, (index) {
+                      //       return Builder(
+                      //         builder: (BuildContext context) {
+                      //           return Container(
+                      //               width: MediaQuery.of(context).size.width,
+                      //               // decoration: BoxDecoration(color: Colors.amber),
+                      //               child: FadeInImage.assetNetwork(
+                      //                 placeholder: Images.PLACE_HOLDER,
+                      //                 image: imageList[index],
+                      //                 fit: BoxFit.fitWidth,
+                      //               ));
+                      //         },
+                      //       );
+                      //     }),
+                      //   ),
+                      ),
                   FifteenSizeBox(),
                   Padding(
                     padding: const EdgeInsets.only(left: 5.0, right: 5.0),
@@ -138,7 +151,7 @@ class ItemWidget extends StatelessWidget {
                             height: 10,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: boxitem.isFragile ? Colors.green : Colors.red,
+                              color: boxitem.isFragile! ? Colors.green : Colors.red,
                             ),
                           ),
                           TenSizeBoxWidth(),
@@ -152,7 +165,7 @@ class ItemWidget extends StatelessWidget {
                             height: 10,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: boxitem.isFragile ? Colors.green : Colors.red,
+                              color: boxitem.isFragile! ? Colors.green : Colors.red,
                             ),
                           ),
                           TenSizeBoxWidth(),
@@ -166,7 +179,7 @@ class ItemWidget extends StatelessWidget {
                             height: 10,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              color: boxitem.isFragile ? Colors.green : Colors.red,
+                              color: boxitem.isFragile! ? Colors.green : Colors.red,
                             ),
                           ),
                           TenSizeBoxWidth(),

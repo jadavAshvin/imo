@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/Models/locationDetailModel.dart';
 import 'package:flt_imo/Service/locationService.dart';
@@ -9,14 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class InventoryDailogController extends GetxController {
-  List<Inventory> inventoryList = List<Inventory>.empty(growable: true).obs;
+  List<Inventory>? inventoryList = List<Inventory>.empty(growable: true).obs;
   var isLocLoading = true.obs;
   var hasValue = false.obs;
   getinventoryList(id) async {
     isLocLoading(true);
-    await locationDetailApi(id).then((response) {
-      if (response.statusCode == 200) {
-        var i = locationListFromJson(response.body);
+    await LocationService.locationDetailApi(id).then((response) {
+      if (response != null) {
+        var i = locationListFromJson(jsonEncode(response.body));
         inventoryList = i.inventories;
       } else {
         inventoryList = [];
@@ -40,18 +42,18 @@ inventoryDailog(id) {
         builder: (c) {
           return c.isLocLoading.value
               ? progressIndicator()
-              : c.inventoryList.isEmpty
+              : c.inventoryList!.isEmpty
                   ? Center(child: Text("No inventory available"))
                   : ListView.separated(
-                      itemCount: c.inventoryList.length,
+                      itemCount: c.inventoryList!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () {
-                            Get.back(result: c.inventoryList[index]);
+                            Get.back(result: c.inventoryList![index]);
                           },
                           child: Container(
                             padding: EdgeInsets.all(8.0),
-                            child: title_text20NormalBlack(title: c.inventoryList[index].name, context: context),
+                            child: title_text20NormalBlack(title: c.inventoryList![index].name!, context: context),
                           ),
                         );
                       },
@@ -65,7 +67,7 @@ inventoryDailog(id) {
   );
 }
 
-Future<Inventory> inventoryBottom(id) async {
+Future<Inventory?> inventoryBottom(id) async {
   return Get.bottomSheet(
     Container(
       width: Get.width / 1.25,
@@ -86,18 +88,18 @@ Future<Inventory> inventoryBottom(id) async {
               builder: (c) {
                 return c.isLocLoading.value
                     ? progressIndicator()
-                    : c.inventoryList.isEmpty
+                    : c.inventoryList!.isEmpty
                         ? Center(child: Text("No inventory available"))
                         : ListView.separated(
-                            itemCount: c.inventoryList.length,
+                            itemCount: c.inventoryList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  Get.back(result: c.inventoryList[index]);
+                                  Get.back(result: c.inventoryList![index]);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(8.0),
-                                  child: title_text20NormalBlack(title: c.inventoryList[index].name, context: context),
+                                  child: title_text20NormalBlack(title: c.inventoryList![index].name!, context: context),
                                 ),
                               );
                             },

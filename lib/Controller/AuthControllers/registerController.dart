@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flt_imo/Screen/Auth/verificationScreen.dart';
-import 'package:flt_imo/Service/userService.dart';
+import 'package:flt_imo/Service/authService.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/keys.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
@@ -56,26 +56,21 @@ class RegisterController extends GetxController {
     }
   }
 
-  registerfun() {
+  registerfun() async {
     processLoading(true);
     var body = setBody();
-    registerApi(body).then((response) {
-      if (response.statusCode == 200) {
-        var res = jsonDecode(response.body);
-        snackBarBack(title: "User Registered Successfull", description: "${res["status"]}").then((rs) {
-          processLoading(false);
+    await AuthService.registerApi(body).then((response) {
+      if (response != null) {
+        var res = response.body;
+        snackBarBack(title: "User Registered Successfull", description: "OTP has been sent to your registered email id").then((rs) {
           Get.to(VerificationScreen(
             email: res["emailAddress"],
             userId: res["userId"],
           ));
         });
-      } else {
-        var res = jsonDecode(response.body);
-        snackBarBack(title: "Failed", description: "${res["message"]}").then((r) {
-          processLoading(false);
-        });
       }
     });
+    processLoading(false);
   }
 
   setBody() {

@@ -1,101 +1,59 @@
-import 'package:flt_imo/Service/constantService.dart';
+import 'package:flt_imo/APIS/HttpService.dart';
+import 'package:flt_imo/APIS/ServiceConstants.dart';
+import 'package:flt_imo/APIS/httpServe.dart';
+import 'package:flt_imo/Utils/mySnackbar.dart';
+import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Utils/urls.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+import 'package:get/get.dart';
 
-/*---------------------------Location Api's-------------------------- */
-Future<http.Response> locationDetailApi(id) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.get(
-        BASE_URL + LOCATION + id.toString(),
-        headers: {'Authorization': getToken()},
-      );
-      print("Location List Response: ${response.request.url}");
-      print("Location List Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+class LocationService {
+  static HttpService httpService = HttpServe();
+
+  static Future<Response?> locationDetailApi(id) async {
+    Response res = await httpService.getRequest(LOCATION + id.toString()).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> deleteLocationApi(id) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.delete(
-        BASE_URL + LOCATION + id.toString(),
-        headers: {'Authorization': getToken()},
-      );
-      print("Delete Location Response: ${response.request.url}");
-      print("Delete Location Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> addLocationApi(body) async {
+    Response res = await httpService.postRequest(ADD_LOCATION, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 201) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> addLocationApi(body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      print("Location Req $body");
-      var response = await client.post(
-        BASE_URL + ADD_LOCATION,
-        headers: {'Authorization': getToken(), "accept": "text/plain", "Content-Type": "application/json"},
-        body: jsonEncode(body),
-      );
-      print("Add Location Response: ${response.request.url}");
-      print("Add Location Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> updateLocationApi(body, id) async {
+    Response res = await httpService.putRequest(LOCATION + id, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-Future<http.Response> updateLocationApi(body, id) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      print("Location Req $body");
-      var response = await client.put(
-        BASE_URL + LOCATION + "$id",
-        headers: {'Authorization': getToken(), "accept": "text/plain", "Content-Type": "application/json"},
-        body: jsonEncode(body),
-      );
-      print("Update Location Response: ${response.request.url}");
-      print("Update Location Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+  static Future<Response?> deleteLocationApi(id) async {
+    Response res = await httpService.deleteRequest(LOCATION + id.toString()).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
 }

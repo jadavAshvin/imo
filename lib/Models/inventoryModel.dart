@@ -15,12 +15,12 @@ class Inventory {
     this.boxes,
   });
 
-  int id;
-  String name;
-  int locationId;
-  int projectId;
-  DateTime createdOn;
-  int boxesCount;
+  int? id;
+  String? name;
+  int? locationId;
+  int? projectId;
+  DateTime? createdOn;
+  int? boxesCount;
   dynamic boxes;
 
   factory Inventory.fromJson(Map<String, dynamic> json) => Inventory(
@@ -38,7 +38,7 @@ class Inventory {
         "name": name,
         "locationId": locationId,
         "projectId": projectId,
-        "createdOn": createdOn.toIso8601String(),
+        "createdOn": createdOn!.toIso8601String(),
         "boxesCount": boxesCount,
         "boxes": boxes,
       };

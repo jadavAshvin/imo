@@ -1,13 +1,14 @@
-import 'dart:convert';
-
 import 'package:flt_imo/Service/projectService.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class DashboardController extends GetxController {
   var isLoading = true.obs;
+  BannerAd? bannerAd;
+
   var piedata = [
     new Task('Location', 0, locationColor),
     new Task('Inventory', 0, inventoryColor),
@@ -18,6 +19,32 @@ class DashboardController extends GetxController {
   void onInit() {
     super.onInit();
     projectStats();
+    bannerAd = BannerAd(
+      adUnitId: BannerAd.testAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (Ad ad) {
+          print('$BannerAd loaded.');
+        },
+        onAdFailedToLoad: (Ad ad, LoadAdError error) {
+          print('$BannerAd failedToLoad: $error');
+        },
+        onAdOpened: (Ad ad) => print('$BannerAd onAdOpened.'),
+        onAdClosed: (Ad ad) => print('$BannerAd onAdClosed.'),
+        onAdImpression: (Ad ad) => print('$BannerAd onApplicationExit.'),
+      ),
+    );
+
+    bannerAd!.load();
+  }
+
+  @override
+  void dispose() {
+    bannerAd?.dispose();
+    bannerAd = null;
+
+    super.dispose();
   }
 
   Future<void> getRefreshData() async {
@@ -26,9 +53,9 @@ class DashboardController extends GetxController {
 
   projectStats() async {
     isLoading(true);
-    await projectStatsApi(AppConstants.PROJECT.id.toString()).then((response) {
-      if (response.statusCode == 200) {
-        var res = jsonDecode(response.body);
+    await ProjectService.projectStatsApi(AppConstants.PROJECT.id.toString()).then((response) {
+      if (response != null) {
+        var res = response.body;
         piedata[0].taskvalue = res["locationsCount"];
         piedata[1].taskvalue = res["inventoriesCount"];
         piedata[2].taskvalue = res["boxesCount"];
@@ -41,7 +68,7 @@ class DashboardController extends GetxController {
 
 class Task {
   String task;
-  int taskvalue;
+  int? taskvalue;
   Color colorval;
 
   Task(this.task, this.taskvalue, this.colorval);

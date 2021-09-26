@@ -20,12 +20,12 @@ class ProjectDetail {
     this.locationsCount,
   });
 
-  int id;
-  String name;
-  DateTime createdOn;
-  List<Location> locations;
-  int inventoriesCount;
-  int locationsCount;
+  int? id;
+  String? name;
+  DateTime? createdOn;
+  List<Location>? locations;
+  int? inventoriesCount;
+  int? locationsCount;
 
   factory ProjectDetail.fromJson(Map<String, dynamic> json) => ProjectDetail(
         id: json["id"],
@@ -39,8 +39,8 @@ class ProjectDetail {
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "createdOn": createdOn.toIso8601String(),
-        "locations": List<dynamic>.from(locations.map((x) => x.toJson())),
+        "createdOn": createdOn!.toIso8601String(),
+        "locations": List<dynamic>.from(locations!.map((x) => x.toJson())),
         "inventoriesCount": inventoriesCount,
         "locationsCount": locationsCount,
       };

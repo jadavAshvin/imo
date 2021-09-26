@@ -1,4 +1,5 @@
 import 'package:flt_imo/Controller/InventoryController/inventoryListController.dart';
+import 'package:flt_imo/Controller/TabViewController/dashboardController.dart';
 import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/NoInternetConnection/no_internet.dart';
@@ -46,7 +47,7 @@ class CreateInventoryController extends GetxController {
   }
 
   setParam(Inventory inventory) {
-    inventoryNameController.text = inventory.name;
+    inventoryNameController.text = inventory.name!;
     selectedLocation.value = Location(id: inventory.locationId);
     upid = inventory.id;
   }
@@ -55,23 +56,15 @@ class CreateInventoryController extends GetxController {
     return ({"name": "${inventoryNameController.text}", "locationId": selectedLocation.value.id, "projectId": AppConstants.PROJECT.id});
   }
 
-  addInventory() {
+  addInventory() async {
     processLoading(true);
     var body = setBody();
-    addInventoryApi(body).then((response) {
-      if (response.statusCode == 201) {
+    await InventoryService.addInventoryApi(body).then((response) {
+      if (response != null) {
         snackBarBack(title: txtSuccess, description: "Inventory Added Successfully").then((v) {
           processLoading(false);
-
+          Get.find<DashboardController>().getRefreshData();
           Get.back();
-        });
-      } else if (response.statusCode == 700) {
-        snackBarBack(title: txtFailed, description: txtUnkownError).then((v) {
-          processLoading(false);
-        });
-      } else {
-        snackBarBack(title: txtFailed, description: txtUnkownError).then((v) {
-          processLoading(false);
         });
       }
     });
@@ -80,20 +73,13 @@ class CreateInventoryController extends GetxController {
   updateInventory() {
     processLoading(true);
     var body = setBody();
-    updateInventoryApi(upid.toString(), body).then((response) {
-      if (response.statusCode == 200) {
+    InventoryService.updateInventoryApi(upid.toString(), body).then((response) {
+      if (response != null) {
         snackBarBack(title: txtSuccess, description: "Inventory Updated Successfully").then((v) {
           processLoading(false);
           Get.back();
+
           Get.find<InventoryListController>().getInventoryList();
-        });
-      } else if (response.statusCode == 700) {
-        snackBarBack(title: txtFailed, description: txtUnkownError).then((v) {
-          processLoading(false);
-        });
-      } else {
-        snackBarBack(title: txtFailed, description: txtUnkownError).then((v) {
-          processLoading(false);
         });
       }
     });

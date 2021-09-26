@@ -22,15 +22,15 @@ class ProfileModel {
     this.gender,
   });
 
-  String userId;
-  String givenName;
-  String phoneNumber;
-  String emailAddress;
+  String? userId;
+  String? givenName;
+  String? phoneNumber;
+  String? emailAddress;
   dynamic profilePicture;
-  Address address;
-  bool isSuccess;
-  String message;
-  String gender;
+  Address? address;
+  bool? isSuccess;
+  String? message;
+  String? gender;
   dynamic status;
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
@@ -39,7 +39,7 @@ class ProfileModel {
         phoneNumber: json["phoneNumber"],
         emailAddress: json["emailAddress"],
         profilePicture: json["profilePicture"],
-        address: Address.fromJson(json["address"]),
+        address: json["address"] == null ? Address(country: "", postalCode: "", region: "", streetAddress: "") : Address.fromJson(json["address"]),
         isSuccess: json["isSuccess"],
         message: json["message"],
         status: json["status"],
@@ -52,7 +52,7 @@ class ProfileModel {
         "phoneNumber": phoneNumber,
         "emailAddress": emailAddress,
         "profilePicture": profilePicture,
-        "address": address.toJson(),
+        "address": address!.toJson(),
         "isSuccess": isSuccess,
         "message": message,
         "status": status,
@@ -67,10 +67,10 @@ class Address {
     this.postalCode,
   });
 
-  String streetAddress;
-  String region;
-  String country;
-  String postalCode;
+  String? streetAddress;
+  String? region;
+  String? country;
+  String? postalCode;
 
   factory Address.fromJson(Map<String, dynamic> json) => Address(
         streetAddress: json["street_address"],

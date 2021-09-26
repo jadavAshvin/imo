@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 class CreateProjects extends StatelessWidget {
   final flag;
 
-  final Project project;
+  final Project? project;
   CreateProjects(this.flag, {this.project});
   // final CreateProjectController createProjectController = Get.put(CreateProjectController());
   @override
@@ -32,7 +32,7 @@ class CreateProjects extends StatelessWidget {
           init: CreateProjectController(),
           initState: (_) {
             if (flag == 1) {
-              Get.find<CreateProjectController>().setParam(project);
+              Get.find<CreateProjectController>().setParam(project!);
             }
           },
           builder: (c) {
@@ -49,7 +49,7 @@ class CreateProjects extends StatelessWidget {
                       Obx(() => c.processLoading.value
                           ? CustomButtonProgress(0, 0)
                           : CustomButton(flag == 0 ? txtCreateProject : txtUpdateProject, 0, 0, () {
-                              c.addBtn(flag, true);
+                              c.addBtn(flag);
                             })),
                     ],
                   );

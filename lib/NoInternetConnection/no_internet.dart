@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'package:flt_imo/Controller/GeneralController/accessController.dart';
-import 'package:flt_imo/Utils/images.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:get/get.dart';
 // import 'package:open_settings/open_settings.dart';
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+// import 'package:lottie/lottie.dart';
 
 class NoInternet extends StatefulWidget {
   @override
@@ -32,18 +31,18 @@ class _NoInternetState extends State<NoInternet> {
           child: Column(
             children: [
               SizedBox(height: 200.0),
-              Container(
-                height: 150.0,
-                width: 150.0,
-                child: Lottie.asset(
-                  Images.no_internet_connection,
-                  repeat: false,
-                ),
-              ),
+              // Container(
+              //   height: 150.0,
+              //   width: 150.0,
+              //   child: Lottie.asset(
+              //     Images.no_internet_connection,
+              //     repeat: false,
+              //   ),
+              // ),
               SizedBox(height: 20.0),
               Text(
                 txtWhoops,
-                style: Theme.of(context).textTheme.subtitle1.copyWith(fontWeight: FontWeight.bold, fontSize: 24.0),
+                style: Theme.of(context).textTheme.subtitle1!.copyWith(fontWeight: FontWeight.bold, fontSize: 24.0),
               ),
               SizedBox(height: 10.0),
               Padding(
@@ -51,7 +50,7 @@ class _NoInternetState extends State<NoInternet> {
                 child: Text(
                   txtCheckInternet,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline5.copyWith(fontWeight: FontWeight.normal, fontSize: 16.0),
+                  style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.normal, fontSize: 16.0),
                 ),
               ),
               SizedBox(height: 30.0),
@@ -68,7 +67,7 @@ class _NoInternetState extends State<NoInternet> {
                       child: Text(
                         txtRetry,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headline5.copyWith(fontWeight: FontWeight.normal, fontSize: 16.0),
+                        style: Theme.of(context).textTheme.headline5!.copyWith(fontWeight: FontWeight.normal, fontSize: 16.0),
                       ),
                     ),
                     decoration: BoxDecoration(
@@ -87,13 +86,14 @@ class _NoInternetState extends State<NoInternet> {
   }
 }
 
-// ignore: missing_return
 Future<bool> isConnected() async {
   try {
     final result = await InternetAddress.lookup('google.com');
     if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
       print('connected');
       return true;
+    } else {
+      return false;
     }
   } on SocketException catch (_) {
     print('not connected');
@@ -101,6 +101,7 @@ Future<bool> isConnected() async {
     return false;
   }
 }
+
 // // ignore: missing_return
 // Future<bool> isConnected() async {
 //   try {

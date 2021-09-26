@@ -10,6 +10,6 @@ class ShareController extends GetxController {
 }
 
 class Collab {
-  String entity, access;
+  String? entity, access;
   Collab({this.entity, this.access});
 }

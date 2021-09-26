@@ -1,6 +1,5 @@
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart' as geolocator;
 import 'package:google_maps_place_picker/google_maps_place_picker.dart';
 import 'package:get/get.dart';
 import 'package:flt_imo/Utils/strings.dart';
@@ -15,7 +14,7 @@ class SearchAddress extends StatefulWidget {
 
 class _SearchAddressState extends State<SearchAddress> {
   static final kInitialPosition = LatLng(23.001145, 72.548124);
-  PickResult selectedPlace;
+  PickResult? selectedPlace;
 
   static double latitude = 23.001145;
   static double longitude = 72.548124;
@@ -53,9 +52,9 @@ class _SearchAddressState extends State<SearchAddress> {
   }
 
   void _updatePosition(CameraPosition _position) async {
-    geolocator.Position newMarkerPosition = geolocator.Position(latitude: _position.target.latitude, longitude: _position.target.longitude);
+    // geolocator.Position newMarkerPosition =
     setSingleLog("Latitude : $latitude");
-    setSingleLog("Latitude : ${newMarkerPosition.latitude}");
+    // setSingleLog("Latitude : ${newMarkerPosition.latitude}");
     // addLatitude=newMarkerPosition.latitude;
     //   addLongtitude=newMarkerPosition.longitude;
 
@@ -98,11 +97,11 @@ class _SearchAddressState extends State<SearchAddress> {
                       : Container(
                           child: InkWell(
                             onTap: () {
-                              print("Selected lat   : ${selectedPlace.geometry.location.lat}");
-                              print("Selected  long  : ${selectedPlace.geometry.location.lng}");
+                              print("Selected lat   : ${selectedPlace!.geometry!.location.lat}");
+                              print("Selected  long  : ${selectedPlace.geometry!.location.lng}");
                               print("Selected address  : ${selectedPlace.formattedAddress}");
-                              AppConstants.LAT = selectedPlace.geometry.location.lat.toString();
-                              AppConstants.LONG = selectedPlace.geometry.location.lng.toString();
+                              AppConstants.LAT = selectedPlace.geometry!.location.lat.toString();
+                              AppConstants.LONG = selectedPlace.geometry!.location.lng.toString();
                               AppConstants.ADDRESS = selectedPlace.formattedAddress;
                               Get.back(result: true);
                             },
@@ -110,7 +109,7 @@ class _SearchAddressState extends State<SearchAddress> {
                               height: 55.0,
                               child: Center(
                                 child: Text(txtOk.tr,
-                                    style: Theme.of(context).textTheme.headline1.copyWith(
+                                    style: Theme.of(context).textTheme.headline1!.copyWith(
                                           color: white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16.0,
@@ -148,7 +147,7 @@ class _SearchAddressState extends State<SearchAddress> {
             height: 50.0,
             child: Center(
               child: Text(txtOk,
-                  style: Theme.of(context).textTheme.headline1.copyWith(
+                  style: Theme.of(context).textTheme.headline1!.copyWith(
                         color: Theme.of(context).accentColor,
                         fontWeight: FontWeight.bold,
                         fontSize: 16.0,

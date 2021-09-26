@@ -9,23 +9,18 @@ List<Project> projectFromJson(String str) => List<Project>.from(json.decode(str)
 String projectToJson(List<Project> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Project {
-  Project({
-    this.id,
-    this.name,
-    this.createdOn,
-    this.locations,
-    this.inventoriesCount,
-    this.locationsCount,
-    this.description,
-  });
+  Project(
+      {this.id, this.name, this.createdOn, this.locations, this.inventoriesCount, this.locationsCount, this.description, this.access, this.isOwner});
 
-  int id;
-  String name;
-  DateTime createdOn;
+  int? id;
+  String? name;
+  DateTime? createdOn;
   dynamic locations;
-  int inventoriesCount;
-  int locationsCount;
-  String description;
+  int? inventoriesCount;
+  int? locationsCount;
+  String? description;
+  String? access;
+  bool? isOwner;
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
         id: json["id"],
@@ -34,13 +29,15 @@ class Project {
         locations: json["locations"],
         inventoriesCount: json["inventoriesCount"],
         locationsCount: json["locationsCount"],
+        access: json["access"],
+        isOwner: json["isOwner"],
         description: json["description"] == null ? "N/A" : json["description"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "createdOn": createdOn.toIso8601String(),
+        "createdOn": createdOn!.toIso8601String(),
         "locations": locations,
         "inventoriesCount": inventoriesCount,
         "locationsCount": locationsCount,

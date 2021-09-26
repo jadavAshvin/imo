@@ -5,6 +5,7 @@ import 'package:flt_imo/Utils/decorationConstant.dart';
 import 'package:flt_imo/Utils/mySnackbar.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
+import 'package:flt_imo/Widgets/GetThings/boxDailog.dart';
 import 'package:flt_imo/Widgets/GetThings/inventoryDailog.dart';
 import 'package:flt_imo/Widgets/GetThings/locationDailog.dart';
 import 'package:flt_imo/Widgets/appNewbar.dart';
@@ -21,7 +22,7 @@ class AddBoxItem extends StatelessWidget {
   final AddItemController addBoxesController = Get.put(AddItemController());
   final flag;
 
-  AddBoxItem({Key key, this.flag}) : super(key: key);
+  AddBoxItem({Key? key, this.flag}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,6 +131,7 @@ class AddBoxItem extends StatelessWidget {
         padding: const EdgeInsets.only(left: 21, right: 21),
         child: Obx(() {
           return GridView.count(
+            physics: NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             crossAxisCount: 3,
             childAspectRatio: 1,
@@ -209,7 +211,7 @@ class AddBoxItem extends StatelessWidget {
             //decoration: boxDecoration(),
             child: TextFormField(
               maxLines: null,
-              controller: addBoxesController.priceController,
+              controller: addBoxesController.descriptionController,
               style: textFieldStyle20(),
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(
@@ -295,6 +297,50 @@ class AddBoxItem extends StatelessWidget {
                     var pro = await inventoryBottom(addBoxesController.selectedLocation.value.id.toString());
                     if (pro != null) {
                       addBoxesController.selectedInventory.value = pro;
+                      addBoxesController.update();
+                    }
+                  }
+                },
+                child: Container(
+                  height: 30.0,
+                  decoration: boxDecorationWhite(),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      child: Text(
+                        txtSelect,
+                        style: smallButtonStyle(),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          FifteenSizeBox(),
+          Text(
+            txtBox,
+            style: textFieldStyle20BoldUnderLine(),
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Obx(() => Text(
+                      "${addBoxesController.selectedBox.value.title}",
+                      style: textFieldStyle18(),
+                    )),
+              ),
+              InkWell(
+                onTap: () async {
+                  if (addBoxesController.selectedInventory.value.id == null) {
+                    mySnackbar(title: "Select Location", description: "Please Select Inventory");
+                  } else {
+                    var pro = await boxBottom(addBoxesController.selectedInventory.value.id.toString());
+                    if (pro != null) {
+                      addBoxesController.selectedBox.value = pro;
                       addBoxesController.update();
                     }
                   }
@@ -463,8 +509,8 @@ class AddBoxItem extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isSaleable.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isSaleable.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isSaleable.value = isChecked!;
                         },
                       ),
                     ),
@@ -506,8 +552,8 @@ class AddBoxItem extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isFragile.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isFragile.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isFragile.value = isChecked!;
                         },
                       ),
                     ),
@@ -549,8 +595,8 @@ class AddBoxItem extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isNegotiable.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isNegotiable.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isNegotiable.value = isChecked!;
                         },
                       ),
                     ),
@@ -576,7 +622,11 @@ class AddBoxItem extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25, right: 25, top: 20, bottom: 50),
       child: Column(
         children: [
-          CustomButton(txtSave, 0, 0, () {}),
+          Obx(() => addBoxesController.processLoading.value
+              ? CustomButtonProgress(0, 0)
+              : CustomButton(txtSave, 0, 0, () {
+                  addBoxesController.addItem(true);
+                })),
           if (flag == 0) TenSizeBox(),
           if (flag == 0) CustomButton(txtSaveAndAddAnotherItem, 0, 0, () {}),
         ],

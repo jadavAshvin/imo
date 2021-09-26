@@ -1,6 +1,7 @@
 import 'package:flt_imo/Controller/LocationController/locationListController.dart';
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/Screen/AddScreens/addLocation.dart';
+import 'package:flt_imo/Screen/ListingScreens/inventoryListScreen.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/images.dart';
@@ -74,14 +75,14 @@ class _LocationListScreenState extends State<LocationListScreen> {
         builder: (c) {
           return c.isLoading.value
               ? progressIndicator()
-              : c.locationListForDisplay.isEmpty
+              : c.locationListForDisplay!.isEmpty
                   ? noDataWidget(txtLocation)
                   : ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: c.locationListForDisplay.length,
+                      itemCount: c.locationListForDisplay!.length,
                       itemBuilder: (context, index) {
-                        var loc = c.locationListForDisplay[index];
+                        var loc = c.locationListForDisplay![index];
                         return setBoxesView(context, loc, c);
                       },
                     );
@@ -98,7 +99,9 @@ class _LocationListScreenState extends State<LocationListScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 10.0, bottom: 10, left: 0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(InventoryList(inventory: loc.id, inventoryName: loc.name));
+              },
               child: Container(
                 transform: Matrix4.translationValues(0, 0, 0),
                 child: Card(
@@ -142,39 +145,50 @@ class _LocationListScreenState extends State<LocationListScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Row(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
-                                        bigTitle_textNormalGrey(title: '${loc.name}', context: context),
+                                        Container(
+                                          width: 120,
+                                          child: Text("${loc.name}",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .button!
+                                                  .copyWith(
+                                                    color: black,
+                                                  )
+                                                  .copyWith(color: grey, fontSize: 22, fontWeight: FontWeight.w500)),
+                                        ),
                                         Row(
                                           children: <Widget>[
-                                            title_text_grey17head(title: 'Created On ${dateFormat.format(loc.createdOn)}', context: context),
-                                            PopupMenuButton<PageEnum>(
-                                                onSelected: (PageEnum value) {
-                                                  switch (value) {
-                                                    case PageEnum.edit:
-                                                      Get.to(AddLocation(flag: 1, location: loc));
-                                                      break;
-                                                    case PageEnum.delete:
-                                                      deleteDialog(
-                                                          entity: txtLocation,
-                                                          function: () {
-                                                            Get.back();
-                                                            c.deleteLocation(context, loc.id);
-                                                          });
-                                                      break;
-                                                  }
-                                                },
-                                                child: Icon(Icons.more_vert),
-                                                itemBuilder: (context) => <PopupMenuEntry<PageEnum>>[
-                                                      PopupMenuItem<PageEnum>(
-                                                        value: PageEnum.edit,
-                                                        child: Text('Edit'),
-                                                      ),
-                                                      PopupMenuItem<PageEnum>(
-                                                        value: PageEnum.delete,
-                                                        child: Text('Delete'),
-                                                      ),
-                                                    ])
+                                            title_text_grey17head(title: 'Created On ${dateFormat.format(loc.createdOn!)}', context: context),
+                                            // PopupMenuButton<PageEnum>(
+                                            //     onSelected: (PageEnum value) {
+                                            //       switch (value) {
+                                            //         case PageEnum.edit:
+                                            //           Get.to(AddLocation(flag: 1, location: loc));
+                                            //           break;
+                                            //         case PageEnum.delete:
+                                            //           deleteDialog(
+                                            //               entity: txtLocation,
+                                            //               function: () {
+                                            //                 Get.back();
+                                            //                 c.deleteLocation(context, loc.id);
+                                            //               });
+                                            //           break;
+                                            //       }
+                                            //     },
+                                            //     child: Icon(Icons.more_vert),
+                                            //     itemBuilder: (context) => <PopupMenuEntry<PageEnum>>[
+                                            //           PopupMenuItem<PageEnum>(
+                                            //             value: PageEnum.edit,
+                                            //             child: Text('Edit'),
+                                            //           ),
+                                            //           PopupMenuItem<PageEnum>(
+                                            //             value: PageEnum.delete,
+                                            //             child: Text('Delete'),
+                                            //           ),
+                                            //         ])
                                           ],
                                         ),
                                       ],
@@ -191,7 +205,7 @@ class _LocationListScreenState extends State<LocationListScreen> {
                                       child: Container(
                                         padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
                                         decoration: BoxDecoration(color: Colors.green[400], borderRadius: BorderRadius.circular(5)),
-                                        child: title_text_white16bold(title: '40 Boxes in ${loc.inventoriesCount} Inventories', context: context),
+                                        child: title_text_white16bold(title: '${loc.inventoriesCount} Inventories', context: context),
                                       ),
                                     ),
                                   ],
@@ -201,7 +215,36 @@ class _LocationListScreenState extends State<LocationListScreen> {
                           ),
                           SizedBox(
                             height: 5,
-                          )
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () {
+                                  Get.to(AddLocation(flag: 1, location: loc));
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  color: greyDark,
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  deleteDialog(
+                                      entity: txtLocation,
+                                      function: () {
+                                        Get.back();
+                                        c.deleteLocation(context, loc.id);
+                                      });
+                                },
+                                child: Icon(
+                                  CupertinoIcons.delete,
+                                  color: greyDark,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -210,9 +253,6 @@ class _LocationListScreenState extends State<LocationListScreen> {
               ),
             ),
           ),
-          // Container(
-          //   child: ImageView(Images.IMAGE_GALLERY, 100, 100),
-          // ),
         ],
       ),
     );

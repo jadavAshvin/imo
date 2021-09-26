@@ -9,15 +9,17 @@ import 'package:flt_imo/Widgets/GetThings/inventoryDailog.dart';
 import 'package:flt_imo/Widgets/GetThings/locationDailog.dart';
 import 'package:flt_imo/Widgets/appNewbar.dart';
 import 'package:flt_imo/Widgets/buttonWidget.dart';
+import 'package:flt_imo/Widgets/progressIndicator.dart';
 import 'package:flt_imo/Widgets/textStyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class AddBox extends StatelessWidget {
   final flag;
   final AddBoxesController addBoxesController = Get.put(AddBoxesController());
 
-  AddBox({Key key, this.flag}) : super(key: key);
+  AddBox({Key? key, this.flag}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,24 +29,36 @@ class AddBox extends StatelessWidget {
         child: CustomNewAppBar(null, flag == 0 ? txtAddBoxes : txtViewAndEdit, "", "", () {}),
         preferredSize: Size.fromHeight(100),
       ),
-      body: ListView(
-        children: [
-          FifteenSizeBox(),
-          locationAndInventoryView(context),
-          FifteenSizeBox(),
-          Divider(
-            height: 2,
-          ),
-          textFieldView(context),
-          dimensionFieldView(context),
-          FifteenSizeBox(),
-          makePublickVisibleView(context),
-          FifteenSizeBox(),
-          Divider(
-            height: 2,
-          ),
-          setButtons(context),
-        ],
+      body: GetX<AddBoxesController>(
+        init: AddBoxesController(),
+        initState: (_) {
+          if (flag == 0) {
+            addBoxesController.clearParam();
+          }
+        },
+        builder: (_) {
+          return addBoxesController.isDetailLoading.value
+              ? progressIndicator()
+              : ListView(
+                  children: [
+                    FifteenSizeBox(),
+                    locationAndInventoryView(context),
+                    FifteenSizeBox(),
+                    Divider(
+                      height: 2,
+                    ),
+                    textFieldView(context),
+                    dimensionFieldView(context),
+                    FifteenSizeBox(),
+                    makePublickVisibleView(context),
+                    FifteenSizeBox(),
+                    Divider(
+                      height: 2,
+                    ),
+                    setButtons(context),
+                  ],
+                );
+        },
       ),
     );
   }
@@ -200,6 +214,8 @@ class AddBox extends StatelessWidget {
                 // border: InputBorder.none,
                 labelText: txtWeight,
               ),
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.next,
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
@@ -217,6 +233,8 @@ class AddBox extends StatelessWidget {
                 // border: InputBorder.none,
                 labelText: txtHeight,
               ),
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+
               keyboardType: TextInputType.number,
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
               textInputAction: TextInputAction.next,
@@ -234,6 +252,8 @@ class AddBox extends StatelessWidget {
                 // border: InputBorder.none,
                 labelText: txtWidth,
               ),
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+
               keyboardType: TextInputType.number,
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
               textInputAction: TextInputAction.next,
@@ -245,6 +265,8 @@ class AddBox extends StatelessWidget {
             //decoration: boxDecoration(),
             child: TextFormField(
               keyboardType: TextInputType.number,
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+
               controller: addBoxesController.lenghtController,
               style: textFieldStyle20(),
               onFieldSubmitted: (c) => addBoxesController.focus.nextFocus(),
@@ -270,6 +292,8 @@ class AddBox extends StatelessWidget {
                 labelText: txtPrice,
               ),
               keyboardType: TextInputType.number,
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+
               textInputAction: TextInputAction.done,
             ),
           ),
@@ -424,8 +448,8 @@ class AddBox extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isSaleable.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isSaleable.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isSaleable.value = isChecked!;
                         },
                       ),
                     ),
@@ -510,8 +534,8 @@ class AddBox extends StatelessWidget {
                         checkColor: Colors.white,
                         value: addBoxesController.isNegotiable.value,
                         tristate: false,
-                        onChanged: (bool isChecked) {
-                          addBoxesController.isNegotiable.value = isChecked;
+                        onChanged: (bool? isChecked) {
+                          addBoxesController.isNegotiable.value = isChecked!;
                         },
                       ),
                     ),

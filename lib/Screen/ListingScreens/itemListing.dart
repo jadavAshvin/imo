@@ -14,7 +14,10 @@ import 'package:get/get.dart';
 
 class BoxesItemListScreen extends StatelessWidget {
   // final HomeController homeController = Get.put(HomeController());
+  final boxId;
+  final boxName;
 
+  const BoxesItemListScreen({Key? key, this.boxId, this.boxName}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +35,7 @@ class BoxesItemListScreen extends StatelessWidget {
           },
         ),
         title: Center(
-          child: bigTitle_textNormal(title: AppConstants.PROJECT.name, context: context),
+          child: bigTitle_textNormal(title: AppConstants.PROJECT.name!, context: context),
         ),
       ),
       body: SafeArea(
@@ -87,7 +90,7 @@ class BoxesItemListScreen extends StatelessWidget {
         textBaseline: TextBaseline.alphabetic,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          title_text20BoldBlack(context: context, title: txtBoxes),
+          title_text20BoldBlack(context: context, title: txtItem),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.end,

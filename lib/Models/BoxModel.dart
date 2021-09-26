@@ -24,20 +24,20 @@ class Box {
     this.createdOn,
   });
 
-  String key;
+  String? key;
   dynamic inventoryId;
-  String title;
-  String description;
-  String uniqueQrCode;
-  bool isSaleable;
-  double price;
-  bool isNegotiable;
-  double weight;
-  double length;
-  double width;
-  double height;
-  List<BoxItem> boxItem;
-  DateTime createdOn;
+  String? title;
+  String? description;
+  String? uniqueQrCode;
+  bool? isSaleable;
+  double? price;
+  bool? isNegotiable;
+  double? weight;
+  double? length;
+  double? width;
+  double? height;
+  List<BoxItem>? boxItem;
+  DateTime? createdOn;
 
   factory Box.fromJson(Map<String, dynamic> json) => Box(
         key: json["key"],
@@ -69,7 +69,7 @@ class Box {
         "length": length,
         "width": width,
         "height": height,
-        "items": List<dynamic>.from(boxItem.map((x) => x.toJson())),
-        "createdOn": createdOn.toIso8601String(),
+        "items": List<dynamic>.from(boxItem!.map((x) => x.toJson())),
+        "createdOn": createdOn!.toIso8601String(),
       };
 }

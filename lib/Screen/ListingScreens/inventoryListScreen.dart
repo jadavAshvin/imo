@@ -1,6 +1,7 @@
 import 'package:flt_imo/Controller/InventoryController/inventoryListController.dart';
 import 'package:flt_imo/Models/inventoryModel.dart';
 import 'package:flt_imo/Screen/AddScreens/addInventory.dart';
+import 'package:flt_imo/Screen/Boxes/boxListing.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/strings.dart';
@@ -17,6 +18,10 @@ import 'package:get/get.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class InventoryList extends StatelessWidget {
+  final inventory;
+  final inventoryName;
+
+  const InventoryList({Key? key, this.inventory, this.inventoryName}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final inController = Get.put(InventoryListController());
@@ -35,14 +40,20 @@ class InventoryList extends StatelessWidget {
           },
         ),
         title: Center(
-          child: bigTitle_textNormal(title: AppConstants.PROJECT.name, context: context),
+          child: bigTitle_textNormal(title: inventoryName != null ? inventoryName : AppConstants.PROJECT.name!, context: context),
         ),
       ),
       body: Container(
         padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 0),
         child: SafeArea(
           child: RefreshIndicator(
-            onRefresh: inController.getInvRefresh,
+            onRefresh: () async {
+              if (inventory != null) {
+                inController.getInventories(inventory);
+              } else {
+                inController.getInventoryList();
+              }
+            },
             child: SingleChildScrollView(
               physics: AlwaysScrollableScrollPhysics(),
               child: Stack(
@@ -69,8 +80,16 @@ class InventoryList extends StatelessWidget {
       padding: const EdgeInsets.only(
         bottom: 10,
       ),
-      child: Obx(
-        () {
+      child: GetX<InventoryListController>(
+        initState: (_) {
+          if (inventory != null) {
+            inController.getInventories(inventory);
+          } else {
+            inController.getInventoryList();
+          }
+        },
+        init: InventoryListController(),
+        builder: (c) {
           print("In file: ${inController.inventoryList}");
           return inController.isLoading.value
               ? progressIndicator()
@@ -99,7 +118,12 @@ class InventoryList extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 0.0, bottom: 10, left: 0),
             child: InkWell(
-              onTap: () {},
+              onTap: () {
+                Get.to(BoxesListScreen(
+                  box: inventory,
+                  boxName: inventory.name,
+                ));
+              },
               child: Container(
                 transform: Matrix4.translationValues(0, 0, 0),
                 child: Card(
@@ -138,7 +162,7 @@ class InventoryList extends StatelessWidget {
                                         FifteenSizeBoxWidth(),
                                         FifteenSizeBoxWidth(),
                                         // Spacer(),
-                                        title_text_grey16(title: 'Created on ${dateFormat.format(inventory.createdOn)}', context: context),
+                                        title_text_grey16(title: 'Created on ${dateFormat.format(inventory.createdOn!)}', context: context),
                                       ],
                                     ),
                                     TenSizeBox(),
@@ -146,39 +170,68 @@ class InventoryList extends StatelessWidget {
                                 ),
                               ),
                               Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 35.0, right: 5),
-                                child: Align(
-                                  alignment: Alignment.topRight,
-                                  child: PopupMenuButton<PageEnum>(
-                                      onSelected: (PageEnum value) {
-                                        switch (value) {
-                                          case PageEnum.edit:
-                                            Get.to(AddInventory(flag: 1, inventory: inventory));
-                                            break;
-                                          case PageEnum.delete:
-                                            deleteDialog(
-                                                entity: txtInventory,
-                                                function: () {
-                                                  Get.back();
-                                                  c.deleteInventory(context, inventory.id);
-                                                });
-                                            break;
-                                        }
-                                      },
-                                      child: Icon(Icons.more_vert),
-                                      itemBuilder: (context) => <PopupMenuEntry<PageEnum>>[
-                                            PopupMenuItem<PageEnum>(
-                                              value: PageEnum.edit,
-                                              child: Text('Edit'),
-                                            ),
-                                            PopupMenuItem<PageEnum>(
-                                              value: PageEnum.delete,
-                                              child: Text('Delete'),
-                                            ),
-                                          ]),
+                              // Padding(
+                              //   padding: const EdgeInsets.only(bottom: 35.0, right: 5),
+                              //   child: Align(
+                              //     alignment: Alignment.topRight,
+                              //     child: PopupMenuButton<PageEnum>(
+                              //         onSelected: (PageEnum value) {
+                              //           switch (value) {
+                              //             case PageEnum.edit:
+                              //               Get.to(AddInventory(flag: 1, inventory: inventory));
+                              //               break;
+                              //             case PageEnum.delete:
+                              //               deleteDialog(
+                              //                   entity: txtInventory,
+                              //                   function: () {
+                              //                     Get.back();
+                              //                     c.deleteInventory(context, inventory.id);
+                              //                   });
+                              //               break;
+                              //           }
+                              //         },
+                              //         child: Icon(Icons.more_vert),
+                              //         itemBuilder: (context) => <PopupMenuEntry<PageEnum>>[
+                              //               PopupMenuItem<PageEnum>(
+                              //                 value: PageEnum.edit,
+                              //                 child: Text('Edit'),
+                              //               ),
+                              //               PopupMenuItem<PageEnum>(
+                              //                 value: PageEnum.delete,
+                              //                 child: Text('Delete'),
+                              //               ),
+                              //             ]),
+                              //   ),
+                              // )
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () {
+                                  Get.to(AddInventory(flag: 1, inventory: inventory));
+                                },
+                                child: Icon(
+                                  Icons.edit,
+                                  color: greyDark,
                                 ),
-                              )
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  deleteDialog(
+                                      entity: txtInventory,
+                                      function: () {
+                                        Get.back();
+                                        c.deleteInventory(context, inventory.id);
+                                      });
+                                },
+                                child: Icon(
+                                  CupertinoIcons.delete,
+                                  color: greyDark,
+                                ),
+                              ),
                             ],
                           ),
                         ],

@@ -4,7 +4,7 @@ class ImageView extends StatelessWidget {
   final String image;
   final double sizeHeight;
   final double sizeWidth;
-  final BoxFit boxFit;
+  final BoxFit? boxFit;
   ImageView(this.image, this.sizeHeight, this.sizeWidth, {this.boxFit});
 
   @override

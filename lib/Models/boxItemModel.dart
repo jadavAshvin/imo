@@ -18,16 +18,16 @@ class BoxItem {
     this.createdOn,
   });
 
-  String key;
-  String title;
-  String description;
-  bool isSaleable;
-  int price;
-  bool isNegotiable;
-  bool isFragile;
-  int quantity;
-  List<String> images;
-  DateTime createdOn;
+  String? key;
+  String? title;
+  String? description;
+  bool? isSaleable;
+  int? price;
+  bool? isNegotiable;
+  bool? isFragile;
+  int? quantity;
+  List<String>? images;
+  DateTime? createdOn;
 
   factory BoxItem.fromJson(Map<String, dynamic> json) => BoxItem(
         key: json["key"],
@@ -51,7 +51,7 @@ class BoxItem {
         "isNegotiable": isNegotiable,
         "isFragile": isFragile,
         "quantity": quantity,
-        "images": List<dynamic>.from(images.map((x) => x)),
-        "createdOn": createdOn.toIso8601String(),
+        "images": List<dynamic>.from(images!.map((x) => x)),
+        "createdOn": createdOn!.toIso8601String(),
       };
 }

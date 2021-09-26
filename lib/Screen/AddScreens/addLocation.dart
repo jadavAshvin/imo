@@ -14,9 +14,9 @@ import 'package:get/get.dart';
 
 class AddLocation extends StatelessWidget {
   final flag;
-  final Location location;
+  final Location? location;
   final AddLocationController addLocationController = Get.put(AddLocationController());
-  AddLocation({Key key, this.flag, this.location}) : super(key: key);
+  AddLocation({Key? key, this.flag, this.location}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,9 @@ class AddLocation extends StatelessWidget {
           init: AddLocationController(),
           initState: (_) {
             if (flag == 1) {
-              Get.find<AddLocationController>().setParam(location);
+              Get.find<AddLocationController>().setParam(location!);
+            } else {
+              Get.find<AddLocationController>().clearParam();
             }
           },
           builder: (c) {
@@ -62,61 +64,62 @@ class AddLocation extends StatelessWidget {
   Widget setTextFieldView(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 50),
-      child: Column(
+      child: Stack(
         children: [
-          Container(
-            padding: EdgeInsets.only(top: 3.0, bottom: 3.0),
-            //  decoration: boxDecoration(),
-            child: TextFormField(
-              controller: addLocationController.enterLocationNameController,
-              style: textFieldStyle20(),
-              //  onEditingComplete: () => loginController.focus.unfocus(),
-              decoration: InputDecoration(
-                //  border: InputBorder.none,
-                labelText: txtEnterLocationName,
-              ),
-              textInputAction: TextInputAction.next,
-            ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
+          Column(
             children: [
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.only(top: 3.0, bottom: 3.0),
-                  //  decoration: boxDecoration(),
-                  child: TextField(
-                    controller: addLocationController.enterAddressController,
-                    maxLines: null,
-                    style: textFieldStyle20(),
-                    //  onEditingComplete: () => loginController.focus.unfocus(),
-                    decoration: InputDecoration(
-                      //   border: InputBorder.none,
-                      labelText: txtLocationAddress,
-                    ),
-                    textInputAction: TextInputAction.newline,
+              Container(
+                padding: EdgeInsets.only(top: 3.0, bottom: 3.0),
+                //  decoration: boxDecoration(),
+                child: TextFormField(
+                  controller: addLocationController.enterLocationNameController,
+                  style: textFieldStyle20(),
+                  //  onEditingComplete: () => loginController.focus.unfocus(),
+                  decoration: InputDecoration(
+                    //  border: InputBorder.none,
+                    labelText: txtEnterLocationName,
                   ),
+                  textInputAction: TextInputAction.next,
                 ),
               ),
-              GestureDetector(
-                onTap: () async {
-                  await Get.to(SearchAddress());
-                  addLocationController.enterAddressController.text = AppConstants.ADDRESS;
-                },
-                child: Container(
-                    width: 50,
-                    height: 50,
-                    child: Icon(
-                      Icons.my_location,
-                      size: 30,
-                    )),
+              SizedBox(
+                height: 10,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      padding: EdgeInsets.only(top: 3.0, bottom: 3.0),
+                      child: TextField(
+                        controller: addLocationController.enterAddressController,
+                        maxLines: null,
+                        style: textFieldStyle20(),
+                        decoration: InputDecoration(
+                          labelText: txtLocationAddress,
+                        ),
+                        textInputAction: TextInputAction.newline,
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      await Get.to(SearchAddress());
+                      addLocationController.enterAddressController.text = AppConstants.ADDRESS!;
+                    },
+                    child: Container(
+                        width: 50,
+                        height: 50,
+                        child: Icon(
+                          Icons.my_location,
+                          size: 30,
+                        )),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10,
               ),
             ],
-          ),
-          SizedBox(
-            height: 10,
           ),
         ],
       ),

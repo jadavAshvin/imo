@@ -47,20 +47,13 @@ class UpdatePasswordController extends GetxController {
       if (validate()) {
         processLoading(true);
         var body = setBody();
-        await updatePasswordApi(body).then((response) {
-          if (response.statusCode == 200) {
+        await UserService.updatePasswordApi(body).then((response) {
+          if (response != null) {
             mySnackbar(title: txtSuccess, description: "Password Updated");
-            processLoading(false);
-          } else {
-            mySnackbar(title: txtFailed, description: "Cannot update password");
-            processLoading(false);
-          }
-          if (response == null) {
-            mySnackbar(title: txtFailed, description: "Cannot update password");
-            processLoading(false);
           }
         });
       }
     }
+    processLoading(false);
   }
 }

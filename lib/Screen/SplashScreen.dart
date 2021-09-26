@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:flt_imo/Bindings/ProfileBinding.dart';
 import 'package:flt_imo/Controller/GeneralController/accessController.dart';
 import 'package:flt_imo/Models/loginResponseModel.dart';
 import 'package:flt_imo/Screen/Auth/login.dart';
+import 'package:flt_imo/Screen/Auth/verificationScreen.dart';
 import 'package:flt_imo/Screen/InitialScreens/projectList.dart';
 import 'package:flt_imo/Service/userService.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
@@ -13,18 +16,19 @@ import 'package:get/get.dart';
 
 silentLogin() {
   var body = {"userId": getPrefValue(Keys.USER_ID), "refreshToken": getPrefValue(Keys.REFRESH_TOKEN)};
-  silentLoginApi(body).then((response) {
-    if (response.statusCode == 200) {
-      var l = loginResponseFromJson(response.body);
-      setPrefValue(Keys.AUTH_TOKEN, l.tokens.idToken.toString());
-      setPrefValue(Keys.ACCESS_TOKEN, l.tokens.accessToken.toString());
+  UserService.silentLoginApi(body).then((response) {
+    if (response != null) {
+      var l = loginResponseFromJson(jsonEncode(response.body));
+      setPrefValue(Keys.AUTH_TOKEN, l.tokens!.idToken.toString());
+      setPrefValue(Keys.ACCESS_TOKEN, l.tokens!.accessToken.toString());
       // setPrefValue(Keys.REFRESH_TOKEN, l.tokens.refreshToken.toString());
       setPrefValue(Keys.USER_ID, l.userId.toString());
     } else {
       setPrefValue(Keys.AUTH_TOKEN, "");
       setPrefValue(Keys.ACCESS_TOKEN, "");
       setPrefValue(Keys.REFRESH_TOKEN, "");
-      // Get.offAll(Login());
+
+      Get.offAll(Login());
     }
   });
 }
@@ -48,9 +52,16 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Future.delayed(Duration(seconds: 2), () {
       if (getPrefValue(Keys.AUTH_TOKEN).isNotEmpty) {
-        Get.offAll(ProjectListScreen());
+        // if (getPrefValue(Keys.VERIFIED_USER) != "Verified") {
+        //   Get.off(VerificationScreen(
+        //     email: getPrefValue(Keys.EMAIL),
+        //     userId: getPrefValue(Keys.USER_ID),
+        //   ));
+        // } else {
+        Get.offAll(() => ProjectListScreen(), binding: ProfileBinding());
+        // }
       } else {
-        Get.offAll(Login());
+        Get.offAll(() => Login());
       }
     });
     return Scaffold(

@@ -18,6 +18,7 @@ logoutDialog() {
             setPrefValue(Keys.AUTH_TOKEN, "");
             setPrefValue(Keys.ACCESS_TOKEN, "");
             setPrefValue(Keys.REFRESH_TOKEN, "");
+            setPrefValue(Keys.VERIFIED_USER, "");
             Get.offAll(Login());
           },
         ),

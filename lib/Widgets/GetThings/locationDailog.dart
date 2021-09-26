@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flt_imo/Models/locationModel.dart';
 import 'package:flt_imo/Models/projectDetail.dart';
 import 'package:flt_imo/Service/projectService.dart';
@@ -9,14 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LocationDailogController extends GetxController {
-  List<Location> locationList = List<Location>.empty(growable: true).obs;
+  List<Location>? locationList = List<Location>.empty(growable: true).obs;
   var isLocLoading = true.obs;
   var hasValue = false.obs;
   getLocationList(id) async {
     isLocLoading(true);
-    await projectDetailApi(id).then((response) {
-      if (response.statusCode == 200) {
-        var l = projectDetailFromJson(response.body);
+    await ProjectService.projectDetailApi(id).then((response) {
+      if (response != null) {
+        var l = projectDetailFromJson(jsonEncode(response.body));
         locationList = l.locations;
       } else {
         locationList = [];
@@ -40,18 +42,18 @@ locationDailog(id) {
         builder: (c) {
           return c.isLocLoading.value
               ? progressIndicator()
-              : c.locationList.isEmpty
+              : c.locationList!.isEmpty
                   ? Center(child: Text("No location available"))
                   : ListView.separated(
-                      itemCount: c.locationList.length,
+                      itemCount: c.locationList!.length,
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                           onTap: () {
-                            Get.back(result: c.locationList[index]);
+                            Get.back(result: c.locationList![index]);
                           },
                           child: Container(
                             padding: EdgeInsets.all(8.0),
-                            child: title_text20NormalBlack(title: c.locationList[index].name, context: context),
+                            child: title_text20NormalBlack(title: c.locationList![index].name!, context: context),
                           ),
                         );
                       },
@@ -86,18 +88,18 @@ locationBottom(id) async {
               builder: (c) {
                 return c.isLocLoading.value
                     ? progressIndicator()
-                    : c.locationList.isEmpty
+                    : c.locationList!.isEmpty
                         ? Center(child: Text("No location available"))
                         : ListView.separated(
-                            itemCount: c.locationList.length,
+                            itemCount: c.locationList!.length,
                             itemBuilder: (BuildContext context, int index) {
                               return InkWell(
                                 onTap: () {
-                                  Get.back(result: c.locationList[index]);
+                                  Get.back(result: c.locationList![index]);
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(8.0),
-                                  child: title_text20NormalBlack(title: c.locationList[index].name, context: context),
+                                  child: title_text20NormalBlack(title: c.locationList![index].name!, context: context),
                                 ),
                               );
                             },

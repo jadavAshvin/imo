@@ -1,6 +1,5 @@
 import 'package:flt_imo/Controller/AuthControllers/profileController.dart';
 import 'package:flt_imo/Screen/Auth/updatePassword.dart';
-import 'package:flt_imo/Screen/Drawer/drawer.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
 import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/images.dart';
@@ -8,7 +7,6 @@ import 'package:flt_imo/Utils/keys.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
-import 'package:flt_imo/Widgets/appNewbar.dart';
 import 'package:flt_imo/Widgets/buttonWidget.dart';
 import 'package:flt_imo/Widgets/imageView.dart';
 import 'package:flt_imo/Widgets/progressIndicator.dart';
@@ -17,19 +15,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class Profile extends StatelessWidget {
-  Profile({Key key}) : super(key: key);
+  Profile({Key? key}) : super(key: key);
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   final ProfileController updateProfileController = Get.find<ProfileController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
-      key: _scaffoldKey,
-      drawer: DrawerOnly(),
-      appBar: PreferredSize(
-        child: CustomNewAppBar(_scaffoldKey, txtEditProfile, "", "", null),
-        preferredSize: Size.fromHeight(100),
-      ),
+      backgroundColor: grey200,
       body: Padding(
         padding: const EdgeInsets.only(left: 25, right: 25),
         child: Obx(() => updateProfileController.isLoading.value
@@ -243,14 +235,14 @@ class Profile extends StatelessWidget {
     );
   }
 
-  buildRadio(BuildContext context, {@required String label}) {
+  buildRadio(BuildContext context, {required String label}) {
     return Obx(() => Row(
           children: [
             Radio(
               activeColor: primaryColor,
               value: label,
               groupValue: updateProfileController.gender.value,
-              onChanged: (value) {
+              onChanged: (dynamic value) {
                 updateProfileController.gender.value = value;
               },
             ),

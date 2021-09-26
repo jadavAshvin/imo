@@ -1,6 +1,8 @@
 import 'package:flt_imo/Controller/AuthControllers/loginController.dart';
 import 'package:flt_imo/Screen/Auth/register.dart';
+import 'package:flt_imo/Screen/Auth/socialLogin.dart';
 import 'package:flt_imo/Utils/strings.dart';
+import 'package:flt_imo/Widgets/10sizebox.dart';
 import 'package:flt_imo/Widgets/20sizebox.dart';
 import 'package:flt_imo/Widgets/30sizebox.dart';
 import 'package:flt_imo/Widgets/button.dart';
@@ -51,7 +53,11 @@ class Login extends StatelessWidget {
                 ),
                 FifteenSizeBox(),
 
-                registerTextView(context)
+                registerTextView(context),
+                TenSizeBox(),
+                or(),
+                TenSizeBox(),
+                socialLoginOptions()
               ],
             ),
           ],

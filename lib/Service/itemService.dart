@@ -1,106 +1,86 @@
-import 'package:flt_imo/Service/constantService.dart';
+import 'package:flt_imo/APIS/HttpService.dart';
+import 'package:flt_imo/APIS/ServiceConstants.dart';
+import 'package:flt_imo/APIS/httpServe.dart';
 import 'package:flt_imo/Utils/app_constants.dart';
+import 'package:flt_imo/Utils/mySnackbar.dart';
+import 'package:flt_imo/Utils/strings.dart';
 import 'package:flt_imo/Utils/urls.dart';
-import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/exceptions/exceptions.dart';
 
-/*---------------------------Boxes Api's-------------------------- */
-Future<http.Response> itemListApi() async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    try {
-      var response = await client.get(
-        BASE_URL + PROJECT + AppConstants.PROJECT.id.toString() + PROJECT_ITEMS,
-        headers: {'Authorization': getToken()},
-      );
-      print("Boxes Item List Response: ${response.request.url}");
-      print("Boxes Item List Response: ${response.body}");
-      return response;
-    } catch (e) {
-      print(e);
-      return emptyRes;
-    } finally {
-      client.close();
+class ItemService {
+  static HttpService httpService = HttpServe();
+
+  static Future<Response?> itemListApi() async {
+    Response res =
+        await httpService.getRequest(PROJECT + AppConstants.PROJECT.id.toString() + PROJECT_ITEMS).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-  } else {
-    return emptyRes;
   }
-}
 
-// Future<http.Response> addBoxesApi(body) async {
-//   accessController.checkOnline();
-//   if (accessController.isOnline.value) {
-//     var client = http.Client();
-//     try {
-//       print("Inventory Req $body");
-//       var response = await client.post(
-//         BASE_URL + ADD_BOXES,
-//         headers: {'Authorization': getToken(), "accept": "text/plain"},
-//         body: jsonEncode(body),
-//       );
-//       print("Inventory Response: ${response.request.url}");
-//       print("Inventory Response: ${response.body}");
-//       return response;
-//     } catch (e) {
-//       print(e);
-//       return emptyRes;
-//     } finally {
-//       client.close();
-//     }
-//   } else {
-//     return emptyRes;
-//   }
-// }
-
-// Future<http.Response> updateBoxesApi(id, body) async {
-//   accessController.checkOnline();
-//   if (accessController.isOnline.value) {
-//     var client = http.Client();
-//     try {
-//       var response = await client.put(
-//         BASE_URL + BOXES + id,
-//         headers: {'Authorization': getToken(), "accept": "text/plain", "Content-Type": "application/json"},
-//         body: jsonEncode(body),
-//       );
-//       print("Inventory List Response: ${response.request.url}");
-//       print("Inventory List Response: ${response.body}");
-//       return response;
-//     } catch (e) {
-//       print(e);
-//       return emptyRes;
-//     } finally {
-//       client.close();
-//     }
-//   } else {
-//     return emptyRes;
-//   }
-// }
-
-// ignore: missing_return
-Future<http.Response> addItemApi(body) async {
-  accessController.checkOnline();
-  if (accessController.isOnline.value) {
-    var client = http.Client();
-    var request = http.MultipartRequest('POST', Uri.parse(BASE_URL + ADD_ITEM));
-    var response;
-    try {
-      // if (uploadFile != null) {
-      //   final file = await http.MultipartFile.fromPath("file", uploadFile.path);
-      //   request.files.add(file);
-      // }
-      // request.fields['InventoryId'] = body["InventoryId"];
-      request.fields.addAll(body);
-      request.headers.addAll({'Authorization': getToken(), "Content-Type": "multipart/form-data"});
-      var res = await request.send();
-      response = await http.Response.fromStream(res);
-      print('Add Item ${res.request.url}');
-      print('Add Item ${response.body}');
-    } catch (e) {
-      print("Item $e");
-      return response;
-    } finally {
-      client.close();
+  static Future<Response?> addItemApi(body) async {
+    Response res = await addItemApiPost(ADD_ITEM, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 201) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
     }
-    return response;
+  }
+
+  static Future<Response> addItemApiPost(String url, body) async {
+    accessController.checkOnline();
+    if (accessController.isOnline.value) {
+      GetHttpClient httpClient = GetHttpClient();
+      late Response response;
+      try {
+        FormData data = FormData(body);
+        response = await httpClient.post(Uri.encodeFull(BASE_URL + url), body: data, headers: {
+          'Authorization': getToken(),
+        });
+        print("Request: ${response.request!.url} ");
+        print("Response: ${response.body}");
+      } on GetHttpException catch (e) {
+        print(e.message);
+        throw (e.message);
+      } finally {
+        httpClient.close();
+      }
+      return response;
+    } else {
+      return emptyRes;
+    }
+  }
+
+  static Future<Response?> updateItemApi(body, id) async {
+    Response res = await httpService.putRequest(INVENTORY + id, body).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
+    }
+  }
+
+  static Future<Response?> deleteItemApi(id) async {
+    Response res = await httpService.deleteRequest(INVENTORY + id).onError((error, stackTrace) => emptyRes);
+    if (res.statusCode == 200) {
+      return res;
+    } else if (res.statusCode == 700) {
+      mySnackbar(title: txtFailed, description: txtUnkownError);
+      return null;
+    } else {
+      mySnackbar(title: "Failed", description: "${res.body["message"]}");
+    }
   }
 }

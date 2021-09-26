@@ -7,6 +7,7 @@ import 'package:flt_imo/Widgets/30sizebox.dart';
 import 'package:flt_imo/Widgets/buttonWidget.dart';
 import 'package:flt_imo/Widgets/textStyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
@@ -14,7 +15,7 @@ class VerificationScreen extends StatelessWidget {
   final email;
   final userId;
 
-  VerificationScreen({Key key, this.email, this.userId}) : super(key: key);
+  VerificationScreen({Key? key, this.email, this.userId}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final VerificationController verifyController = Get.put(VerificationController());
@@ -71,8 +72,9 @@ class VerificationScreen extends StatelessWidget {
   Widget loginView(BuildContext context, verifyController) {
     return PinCodeTextField(
       length: 6,
+      keyboardType: TextInputType.number,
+      inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
       animationType: AnimationType.fade,
-      textInputType: TextInputType.number,
       controller: verifyController.pinController,
       pinTheme: PinTheme(
         activeColor: Get.theme.primaryColor,
@@ -89,6 +91,7 @@ class VerificationScreen extends StatelessWidget {
       onChanged: (String value) {
         verifyController.pin = value;
       },
+      appContext: context,
     );
 
     // return TextFormField(

@@ -10,6 +10,7 @@ import 'package:flt_imo/Utils/colors.dart';
 import 'package:flt_imo/Utils/images.dart';
 import 'package:flt_imo/Utils/strings.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class PrintQR extends StatelessWidget {
@@ -166,6 +167,8 @@ class PrintQR extends StatelessWidget {
             //  decoration: boxDecoration(),
             child: TextFormField(
               keyboardType: TextInputType.number,
+              inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
+
               style: textFieldStyle20(),
               //  onEditingComplete: () => loginController.focus.unfocus(),
               decoration: InputDecoration(

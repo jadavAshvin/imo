@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class BoxItemWidget extends StatelessWidget {
   final Box box;
 
-  const BoxItemWidget({@required this.box});
+  const BoxItemWidget({required this.box});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,11 +69,11 @@ class BoxItemWidget extends StatelessWidget {
                                         crossAxisAlignment: CrossAxisAlignment.baseline,
                                         textBaseline: TextBaseline.alphabetic,
                                         children: <Widget>[
-                                          title_text16Bold(title: '${box.boxItem.length} Items', context: context),
+                                          title_text16Bold(title: '${box.boxItem!.length} Items', context: context),
                                           FifteenSizeBoxWidth(),
                                           FifteenSizeBoxWidth(),
                                           // Spacer(),
-                                          title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn)}', context: context),
+                                          title_text_grey16(title: 'Created on ${dateFormat.format(box.createdOn!)}', context: context),
 
                                           FifteenSizeBoxWidth(),
                                           FifteenSizeBoxWidth(),
